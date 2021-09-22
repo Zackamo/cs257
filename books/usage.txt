@@ -2,14 +2,18 @@ NAME
 	Python3 books.py -- Search the books dataset
 
 SYNOPSIS
-
+	Python3 books.py [-a | -t | -y | -h] [arguments]...
 	
 DESCRIPTION
 
 -a,  --search-author keyword
+	prints a list of books containing keyword in the author's name in alphabetical order by author
 
 -t,  --search-title keyword
+	prints a list of books containing keyword in the title in alphabetical order by title
 
 -y,  --search-year startyear endyear
+	prints a list of books published in or between startyear and endyear in chronological order 
 
 -h,  --help
+	prints this usage statement and exits
