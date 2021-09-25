@@ -13,8 +13,8 @@ DESCRIPTION
 	prints a list of books containing keyword in the title. Sorts the results in alphabetical order by title 
 	by default or if title is selected or chronologically if year is selected.
 
--y,  --search-year startyear endyear
-	prints a list of books published in or between startyear and endyear in chronological order 
+-y,  --search-year year1 year2
+	prints a list of books published in or between year1 and year2 in chronological order 
 
 -h,  --help
 	prints this usage statement and exits
