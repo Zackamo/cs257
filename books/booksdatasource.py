@@ -15,6 +15,7 @@ class Author:
         self.given_name = given_name
         self.birth_year = birth_year
         self.death_year = death_year
+        self.writtenWorks = []
 
     def __eq__(self, other):
         ''' For simplicity, we're going to assume that no two authors have the same name. '''
@@ -49,7 +50,13 @@ class BooksDataSource:
             suitable instance variables for the BooksDataSource object containing
             a collection of Author objects and a collection of Book objects.
         '''
-        pass
+        self.authorList = []
+        self.bookList = []
+        with open("books1.csv") as csvfile:
+            for row in csvfile:
+                thisAuthor = parseAuthorString(row[2])
+                self.bookList.append(Book(row[0], row[1], thisAuthor))
+            
 
     def authors(self, search_text=None):
         ''' Returns a list of all the Author objects in this data source whose names contain
@@ -71,6 +78,7 @@ class BooksDataSource:
                 default -- same as 'title' (that is, if sort_by is anything other than 'year'
                             or 'title', just do the same thing you would do for 'title')
         '''
+        
         return []
 
     def books_between_years(self, start_year=None, end_year=None):
@@ -86,3 +94,27 @@ class BooksDataSource:
         '''
         return []
 
+def newAuthor(self, lastName, firstName, years):
+    ''' Returns an author object corresponding to the information given. If an author by the
+        given name and surname already exists in the authorList, return it. Otherwise add the
+        new author to the authorList and return it.
+    '''
+
+def parseAuthorInfo(self, authorString):
+    ''' Returns an Author object corresponding to the given string:
+        Parses a string containing an authors First and Last names, separated by spaces
+        followed by birth and death years of the form (birth-death) or (birth-).
+    '''
+    authors = []
+    splitAuthor = authorString.split(' ')
+    splitSize = splitAuthor.len()
+        if (splitSize == 3):
+            author = Author(splitAuthor[1],splitAuthor[0],splitAuthor[2])
+            authors.append()
+            
+        else if (splitSize == 4):
+            authors.append(Author(splitAuthor[2],splitAuthor[0]+' '+splitAuthor[1],splitAuthor[3]))
+        else if (splitSize >= 5):
+            print("Multi-Author book")
+        
+    return authors
