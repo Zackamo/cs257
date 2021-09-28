@@ -52,14 +52,14 @@ class BooksDataSource:
         '''
         self.authorList = []
         self.bookList = []
-        with open("books1.csv") as csvfile:
+        with open(books_csv_file_name) as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                print(row[2])
-                thisAuthor = self.parseAuthorString(row[2])
+                thisAuthor = parseAuthorString(self, row[2])
                 newBook = Book(row[0], row[1], thisAuthor)
                 self.bookList.append(newBook)
                 for curAuthor in thisAuthor:
+                    print(thisAuthor)
                     curAuthor.writtenWorks.append(newBook)
 
     def authors(self, search_text=None):
@@ -98,40 +98,44 @@ class BooksDataSource:
         '''
         return []
 
-    def newAuthor(self, lastName, firstName, years):
-        ''' Returns an author object corresponding to the information given. If an author by the
-            given name and surname already exists in the authorList, return it. Otherwise add the
-            new author to the authorList and return it.
-        '''
-        yearList = years[1 : -1].split("-")
-        birthYear, deathYear = yearList[0], yearList[1]
-        author = Author(lastName, firstName, birthYear, deathYear)
+def newAuthor(self, lastName, firstName, years):
+    ''' Returns an author object corresponding to the information given. If an author by the
+        given name and surname already exists in the authorList, return it. Otherwise add the
+        new author to the authorList and return it.
+    '''
+    yearList = years[1 : -1].split("-")
+    birthYear, deathYear = yearList[0], yearList[1]
+    author = Author(lastName, firstName, birthYear, deathYear)
 
-        for curAuthor in self.authorList:
-            if (curAuthor == author):
-                return curAuthor
-            else:
-                self.authorList.append(author)
-                return author
+    for curAuthor in self.authorList:
+        if (curAuthor == author):
+            print("curAuthor" , curAuthor.surname)
+            return curAuthor
+        else:
+            self.authorList.append(author)
+            print("in else of curAuthor loop")
+            print("author" , author.surname)
+            return author
 
-    def parseAuthorString(self, authorString):
-        ''' Returns an Author object corresponding to the given string:
-            Parses a string containing an authors First and Last names, separated by spaces
-            followed by birth and death years of the form (birth-death) or (birth-).
-        '''
-        authors = []
-        splitAuthor = authorString.split(' ')
-        splitSize = len(splitAuthor)
-        if (splitSize == 3):
-            author = self.newAuthor(splitAuthor[1],splitAuthor[0],splitAuthor[2])
-            authors.append(author)
+def parseAuthorString(self, authorString):
+    ''' Returns an Author object corresponding to the given string:
+        Parses a string containing an authors First and Last names, separated by spaces
+        followed by birth and death years of the form (birth-death) or (birth-).
+    '''
+    authors = []
+    splitAuthor = authorString.split(' ')
+    splitSize = len(splitAuthor)
+    if (splitSize == 3):
+        print ("splitSize = 3")
+        author = newAuthor(self, splitAuthor[1],splitAuthor[0],splitAuthor[2])
+        print (author.surname)
+        authors.append(author)
 
-        elif (splitSize == 4):
-            authors.append(newAuthor(splitAuthor[2],splitAuthor[0]+' '+splitAuthor[1],splitAuthor[3]))
-        elif (splitSize >= 5):
-            print("Multi-Author book")
-
-        return authors
+    elif (splitSize == 4):
+        authors.append(newAuthor(self, splitAuthor[2],splitAuthor[0]+' '+splitAuthor[1],splitAuthor[3]))
+    elif (splitSize >= 5):
+        print("Multi-Author book")
+    return authors
 
 if __name__ == "__main__":
     ds = BooksDataSource("books1test.csv")
