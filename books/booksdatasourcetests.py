@@ -14,6 +14,12 @@ class BooksDataSourceTester(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_initialisation(self):
+        books = self.data_source.booklist
+        authors = self.data_source.authorList
+        self.assertTrue(len(books) == 8)
+        self.assertTrue(len(books) == 8)
+
 ######### Author Tests ###########
 
     def test_unique_author(self):
