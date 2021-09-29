@@ -59,7 +59,6 @@ class BooksDataSource:
                 newBook = Book(row[0], row[1], thisAuthor)
                 self.bookList.append(newBook)
                 for curAuthor in thisAuthor:
-                    print(thisAuthor)
                     curAuthor.writtenWorks.append(newBook)
 
     def authors(self, search_text=None):
@@ -111,11 +110,8 @@ def newAuthor(self, lastName, firstName, years):
         if (curAuthor == author):
             print("curAuthor" , curAuthor.surname)
             return curAuthor
-        else:
-            self.authorList.append(author)
-            print("in else of curAuthor loop")
-            print("author" , author.surname)
-            return author
+    self.authorList.append(author)
+    return author
 
 def parseAuthorString(self, authorString):
     ''' Returns an Author object corresponding to the given string:
