@@ -55,7 +55,7 @@ class BooksDataSource:
         with open(books_csv_file_name) as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                thisAuthor = self.parseAuthorList(self.authorStringToList(row[2]))
+                thisAuthor = parseAuthorString(self, row[2])
                 newBook = Book(row[0], row[1], thisAuthor)
                 self.bookList.append(newBook)
                 for curAuthor in thisAuthor:
@@ -67,7 +67,14 @@ class BooksDataSource:
             returns all of the Author objects. In either case, the returned list is sorted
             by surname, breaking ties using given name (e.g. Ann Brontë comes before Charlotte Brontë).
         '''
-        return []
+        results = []
+        search_text = search_text.lower()
+        for author in self.authorList:
+            if search_text in author.surname.lower():
+                results.append(author)
+            elif search_text in author.given_name.lower():
+                results.append(author)
+        return sorted(results)
 
     def books(self, search_text=None, sort_by='title'):
         ''' Returns a list of all the Book objects in this data source whose
@@ -97,51 +104,38 @@ class BooksDataSource:
         '''
         return []
 
-    def newAuthor(self, lastName, firstName, years):
-        ''' Returns an author object corresponding to the information given. If an author by the
-            given name and surname already exists in the authorList, return it. Otherwise add the
-            new author to the authorList and return it.
-        '''
-        yearList = years[1 : -1].split("-")
-        birthYear, deathYear = yearList[0], yearList[1]
-        author = Author(lastName, firstName, birthYear, deathYear)
+def newAuthor(self, lastName, firstName, years):
+    ''' Returns an author object corresponding to the information given. If an author by the
+        given name and surname already exists in the authorList, return it. Otherwise add the
+        new author to the authorList and return it.
+    '''
+    yearList = years[1 : -1].split("-")
+    birthYear, deathYear = yearList[0], yearList[1]
+    author = Author(lastName, firstName, birthYear, deathYear)
 
-        for curAuthor in self.authorList:
-            if (curAuthor == author):
-                return curAuthor
-        self.authorList.append(author)
-        return author
+    for curAuthor in self.authorList:
+        if (curAuthor == author):
+            return curAuthor
+    self.authorList.append(author)
+    return author
 
-    def authorStringToList(self, authorString):
-        ''' Returns each word in authorString as an element of a list
-        '''
+def parseAuthorString(self, authorString):
+    ''' Returns an Author object corresponding to the given string:
+        Parses a string containing an authors First and Last names, separated by spaces
+        followed by birth and death years of the form (birth-death) or (birth-).
+    '''
+    authors = []
+    splitAuthor = authorString.split(' ')
+    splitSize = len(splitAuthor)
+    if (splitSize == 3):
+        author = newAuthor(self, splitAuthor[1],splitAuthor[0],splitAuthor[2])
+        authors.append(author)
 
-        splitAuthor = authorString.split(' ')
-        return splitAuthor
-
-
-    def parseAuthorList(self, authorList):
-        ''' Returns an Author object corresponding to the given string:
-            Parses a string containing an authors First and Last names, separated by spaces
-            followed by birth and death years of the form (birth-death) or (birth-).
-        '''
-        authors = []
-        length = len(authorList)
-        if (length == 3):
-            author = self.newAuthor(authorList[1],authorList[0],authorList[2])
-            authors.append(author)
-
-        elif (length == 4):
-            authors.append(self.newAuthor(authorList[2],authorList[0]+' '+authorList[1],authorList[3]))
-        elif (length >= 5):
-            if "and" in authorList:
-                andPos = authorList.index("and")
-                authors = authors + self.parseAuthorList(authorList[ : andPos])
-                authors = authors + self.parseAuthorList(authorList[(andPos + 1) : ])
-
-            else:
-                print("No 'and' in long author string: expecting multiple authors")
-        return authors
+    elif (splitSize == 4):
+        authors.append(newAuthor(self, splitAuthor[2],splitAuthor[0]+' '+splitAuthor[1],splitAuthor[3]))
+    elif (splitSize >= 5):
+        print("Multi-Author book")
+    return authors
 
 if __name__ == "__main__":
     ds = BooksDataSource("books1test.csv")
