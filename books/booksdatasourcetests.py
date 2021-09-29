@@ -19,8 +19,8 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_initialisation(self):
         books = self.data_source.bookList
         authors = self.data_source.authorList
-        self.assertTrue(len(books) == 10)
-        self.assertTrue(len(authors) == 10)
+        self.assertTrue(len(books) == 8)
+        self.assertTrue(len(authors) == 8)
 
 ######### Author Tests ###########
 
