@@ -108,7 +108,6 @@ def newAuthor(self, lastName, firstName, years):
 
     for curAuthor in self.authorList:
         if (curAuthor == author):
-            print("curAuthor" , curAuthor.surname)
             return curAuthor
     self.authorList.append(author)
     return author
@@ -122,9 +121,7 @@ def parseAuthorString(self, authorString):
     splitAuthor = authorString.split(' ')
     splitSize = len(splitAuthor)
     if (splitSize == 3):
-        print ("splitSize = 3")
         author = newAuthor(self, splitAuthor[1],splitAuthor[0],splitAuthor[2])
-        print (author.surname)
         authors.append(author)
 
     elif (splitSize == 4):
