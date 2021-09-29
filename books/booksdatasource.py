@@ -8,6 +8,7 @@
 '''
 
 import csv
+from operator import attrgetter
 
 class Author:
     def __init__(self, surname='', given_name='', birth_year=None, death_year=None):
@@ -74,7 +75,7 @@ class BooksDataSource:
                 results.append(author)
             elif search_text in author.given_name.lower():
                 results.append(author)
-        return sorted(results)
+        return sorted(results, key=attrgetter("surname", "given_name"))
 
     def books(self, search_text=None, sort_by='title'):
         ''' Returns a list of all the Book objects in this data source whose
