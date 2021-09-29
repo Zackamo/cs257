@@ -19,8 +19,8 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_initialisation(self):
         books = self.data_source.bookList
         authors = self.data_source.authorList
-        self.assertTrue(len(books) == 8)
-        self.assertTrue(len(authors) == 8)
+        self.assertTrue(len(books) == 10)
+        self.assertTrue(len(authors) == 10)
 
 ######### Author Tests ###########
 
@@ -82,42 +82,42 @@ class BooksDataSourceTester(unittest.TestCase):
 ######### Year Tests ###########
 
     def test_multiRange(self):
-        books = self.data_source.books(1846, 1849)
+        books = self.data_source.books_between_years(1846, 1849)
         self.assertTrue(len(books) == 2)
         self.assertTrue(books[0] == Book('Wuthering Heights'))
         self.assertTrue(books[1] == Book('The Tenant of Wildfell Hall'))
 
     def test_onEndYear(self):
-        books = self.data_source.books(1927, 1934)
+        books = self.data_source.books_between_years(1927, 1934)
         self.assertTrue(len(books) == 2)
         self.assertTrue(books[0] == Book('Elmer Gantry'))
         self.assertTrue(books[1] == Book('Right Ho, Jeeves'))
 
     def test_none(self):
-        books = self.data_source.books(1750, 1790)
+        books = self.data_source.books_between_years(1750, 1790)
         self.assertTrue(len(books) == 0)
 
     def test_tie(self):
-        books = self.data_source.books(1995, 2000)
+        books = self.data_source.books_between_years(1995, 2000)
         self.assertTrue(len(books) == 2)
         self.assertTrue(books[0] == Book('Neverwhere'))
         self.assertTrue(books[1] == Book('Thief of Time'))
 
     def test_onlyStartYear(self):
-        books = self.data_source.books(1995)
+        books = self.data_source.books_between_years(1995)
         self.assertTrue(len(books) == 2)
         self.assertTrue(books[0] == Book('Neverwhere'))
         self.assertTrue(books[1] == Book('Thief of Time'))
 
     def test_onlyEndYear(self):
-        books = self.data_source.books(end_year=1850)
+        books = self.data_source.books_between_years(end_year=1850)
         self.assertTrue(len(books) == 2)
         self.assertTrue(books[0] == Book('Wuthering Heights'))
         self.assertTrue(books[1] == Book('The Tenant of Wildfell Hall'))
 
     def test_badArg(self):
         #not totally sure what would happen here...
-        books = self.data_source.books("", 1850)
+        books = self.data_source.books_between_years("", 1850)
         self.assertTrue(len(books) == 2)
         self.assertTrue(books[0] == Book('Neverwhere'))
         self.assertTrue(books[1] == Book('Thief of Time'))
