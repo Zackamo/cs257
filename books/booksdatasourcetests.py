@@ -4,12 +4,12 @@
    From a template by Jeff Ondich
 '''
 
-import booksdatasource
+from booksdatasource import BooksDataSource, Author, Book
 import unittest
 
 class BooksDataSourceTester(unittest.TestCase):
     def setUp(self):
-        self.data_source = booksdatasource.BooksDataSource('books1test.csv')
+        self.data_source = BooksDataSource('books1test.csv')
 
     def tearDown(self):
         pass
@@ -17,10 +17,10 @@ class BooksDataSourceTester(unittest.TestCase):
 ######### Initialization Tests ########
 
     def test_initialisation(self):
-        books = self.data_source.booklist
+        books = self.data_source.bookList
         authors = self.data_source.authorList
         self.assertTrue(len(books) == 8)
-        self.assertTrue(len(books) == 8)
+        self.assertTrue(len(authors) == 8)
 
 ######### Author Tests ###########
 
@@ -58,21 +58,21 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_unique_title(self):
         titles = self.data_source.books('Ho,')
         self.assertTrue(len(titles) == 1)
-        self.assertTrue(titles[0] == Title('Right Ho, Jeeves'))
+        self.assertTrue(titles[0] == Book('Right Ho, Jeeves'))
 
     def test_multi_byTitle(self):
         titles = self.data_source.books('il','title')
         self.assertTrue(len(titles) == 2)
-        self.assertTrue(titles[0] == Title('The Tenant of Wildfell Hall'))
-        self.assertTrue(titles[1] == Title('Villette'))
+        self.assertTrue(titles[0] == Book('The Tenant of Wildfell Hall'))
+        self.assertTrue(titles[1] == Book('Villette'))
 
     def test_multi_byYear(self):
         titles = self.data_source.books('er','title')
         self.assertTrue(len(titles) == 4)
-        self.assertTrue(titles[3] == Title('Neverwhere'))
-        self.assertTrue(titles[0] == Title('Wuthering Heights'))
-        self.assertTrue(titles[2] == Title('Hard-Boiled Wonderland and the End of the World'))
-        self.assertTrue(titles[1] == Title('Elmer Gantry'))
+        self.assertTrue(titles[3] == Book('Neverwhere'))
+        self.assertTrue(titles[0] == Book('Wuthering Heights'))
+        self.assertTrue(titles[2] == Book('Hard-Boiled Wonderland and the End of the World'))
+        self.assertTrue(titles[1] == Book('Elmer Gantry'))
 
     def test_missing_title(self):
         titles = self.data_source.books('Hello')
@@ -84,14 +84,14 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_multiRange(self):
         books = self.data_source.books(1846, 1849)
         self.assertTrue(len(books) == 2)
-        self.assertTrue(books[0] == Title('Wuthering Heights'))
-        self.assertTrue(books[1] == Title('The Tenant of Wildfell Hall'))
+        self.assertTrue(books[0] == Book('Wuthering Heights'))
+        self.assertTrue(books[1] == Book('The Tenant of Wildfell Hall'))
 
     def test_onEndYear(self):
         books = self.data_source.books(1927, 1934)
         self.assertTrue(len(books) == 2)
-        self.assertTrue(books[0] == Title('Elmer Gantry'))
-        self.assertTrue(books[1] == Title('Right Ho, Jeeves'))
+        self.assertTrue(books[0] == Book('Elmer Gantry'))
+        self.assertTrue(books[1] == Book('Right Ho, Jeeves'))
 
     def test_none(self):
         books = self.data_source.books(1750, 1790)
@@ -100,27 +100,27 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_tie(self):
         books = self.data_source.books(1995, 2000)
         self.assertTrue(len(books) == 2)
-        self.assertTrue(books[0] == Title('Neverwhere'))
-        self.assertTrue(books[1] == Title('Thief of Time'))
+        self.assertTrue(books[0] == Book('Neverwhere'))
+        self.assertTrue(books[1] == Book('Thief of Time'))
 
     def test_onlyStartYear(self):
         books = self.data_source.books(1995)
         self.assertTrue(len(books) == 2)
-        self.assertTrue(books[0] == Title('Neverwhere'))
-        self.assertTrue(books[1] == Title('Thief of Time'))
+        self.assertTrue(books[0] == Book('Neverwhere'))
+        self.assertTrue(books[1] == Book('Thief of Time'))
 
     def test_onlyEndYear(self):
         books = self.data_source.books(end_year=1850)
         self.assertTrue(len(books) == 2)
-        self.assertTrue(books[0] == Title('Wuthering Heights'))
-        self.assertTrue(books[1] == Title('The Tenant of Wildfell Hall'))
+        self.assertTrue(books[0] == Book('Wuthering Heights'))
+        self.assertTrue(books[1] == Book('The Tenant of Wildfell Hall'))
 
     def test_badArg(self):
         #not totally sure what would happen here...
         books = self.data_source.books("", 1850)
         self.assertTrue(len(books) == 2)
-        self.assertTrue(books[0] == Title('Neverwhere'))
-        self.assertTrue(books[1] == Title('Thief of Time'))
+        self.assertTrue(books[0] == Book('Neverwhere'))
+        self.assertTrue(books[1] == Book('Thief of Time'))
 if __name__ == '__main__':
     unittest.main()
 
