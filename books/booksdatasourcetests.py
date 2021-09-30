@@ -19,8 +19,8 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_initialisation(self):
         books = self.data_source.bookList
         authors = self.data_source.authorList
-        self.assertTrue(len(books) == 8)
-        self.assertTrue(len(authors) == 8)
+        self.assertTrue(len(books) == 10)
+        self.assertTrue(len(authors) == 9)
 
 ######### Author Tests ###########
 
@@ -43,7 +43,7 @@ class BooksDataSourceTester(unittest.TestCase):
 
     def test_empty_author(self):
         authors = self.data_source.authors('')
-        self.assertTrue(len(authors) == 6)
+        self.assertTrue(len(authors) == 9)
         self.assertTrue(authors[0] == Author('Brontë','Ann'))
         self.assertTrue(authors[1] == Author('Brontë','Charlotte'))
         self.assertTrue(authors[2] == Author('Brontë','Emily'))
@@ -51,7 +51,7 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_missing_author(self):
         authors = self.data_source.authors('broq')
         self.assertTrue(len(authors) == 0)
-        
+
 
 ######### Title Tests ##########
 
@@ -62,12 +62,13 @@ class BooksDataSourceTester(unittest.TestCase):
 
     def test_multi_byTitle(self):
         titles = self.data_source.books('il','title')
-        self.assertTrue(len(titles) == 2)
-        self.assertTrue(titles[0] == Book('The Tenant of Wildfell Hall'))
-        self.assertTrue(titles[1] == Book('Villette'))
+        self.assertTrue(len(titles) == 3)
+        self.assertTrue(titles[0] == Book('Hard-Boiled Wonderland and the End of the World'))
+        self.assertTrue(titles[1] == Book('The Tenant of Wildfell Hall'))
+        self.assertTrue(titles[2] == Book('Villette'))
 
     def test_multi_byYear(self):
-        titles = self.data_source.books('er','title')
+        titles = self.data_source.books('er','year')
         self.assertTrue(len(titles) == 4)
         self.assertTrue(titles[3] == Book('Neverwhere'))
         self.assertTrue(titles[0] == Book('Wuthering Heights'))
@@ -123,4 +124,3 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertTrue(books[1] == Book('Thief of Time'))
 if __name__ == '__main__':
     unittest.main()
-

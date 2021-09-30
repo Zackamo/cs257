@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 '''
     booksdatasource.py
-    Jeff Ondich, 21 September 2021
+    Zack Johnson and Alia Babinet, 30 September 2021
+    Starter code provided by Jeff Ondich
 
     For use in the "books" assignment at the beginning of Carleton's
     CS 257 Software Design class, Fall 2021.
@@ -94,7 +95,12 @@ class BooksDataSource:
         for book in self.bookList:
             if search_text in book.title.lower():
                 results.append(book)
-        return sorted(results, key=attrgetter("title", "publication_year"))
+        if sort_by == "title":
+            return sorted(results, key=attrgetter("title", "publication_year"))
+        elif sort_by == "year":
+            return sorted(results, key=attrgetter("publication_year", "title"))
+        else:
+            print("Unrecognizable sort order: expecting either 'title' or 'year'")
 
     def books_between_years(self, start_year=None, end_year=None):
         ''' Returns a list of all the Book objects in this data source whose publication
@@ -125,7 +131,7 @@ class BooksDataSource:
                 for book in self.bookList:
                     if book.publication_year >= start_year and book.publication_year <= end_year:
                         results.append(book)
-                        
+
         return sorted(results, key=attrgetter("publication_year", "title"))
 
     def newAuthor(self, lastName, firstName, years):
