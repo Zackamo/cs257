@@ -100,7 +100,7 @@ class BooksDataSource:
         elif sort_by == "year":
             return sorted(results, key=attrgetter("publication_year", "title"))
         else:
-            print("Unrecognizable sort order: expecting either 'title' or 'year'")
+            return [1, "Unrecognizable sort order: expecting either 'title' or 'year'"]
 
     def books_between_years(self, start_year=None, end_year=None):
         ''' Returns a list of all the Book objects in this data source whose publication
@@ -115,7 +115,7 @@ class BooksDataSource:
         '''
         results = []
         if isinstance(start_year, str) or isinstance(end_year, str):
-            print("Year range not valid: expecting an integer for year range")
+            return [1, "Year range not valid: expecting an integer for year range"]
         else:
             if start_year == None and end_year == None:
                 results = bookList
@@ -177,7 +177,7 @@ class BooksDataSource:
                 authors = authors + self.parseAuthorList(authorList[(andPos + 1) : ])
 
             else:
-                print("No 'and' in long author string: expecting multiple authors")
+                return [1, "No 'and' in long author string: expecting multiple authors"]
         return authors
 
 if __name__ == "__main__":
