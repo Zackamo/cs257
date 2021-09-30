@@ -57,7 +57,7 @@ class BooksDataSource:
             reader = csv.reader(csvfile)
             for row in reader:
                 thisAuthor = self.parseAuthorList(self.authorStringToList(row[2]))
-                newBook = Book(row[0], row[1], thisAuthor)
+                newBook = Book(row[0], int(row[1]), thisAuthor)
                 self.bookList.append(newBook)
                 for curAuthor in thisAuthor:
                     curAuthor.writtenWorks.append(newBook)
@@ -89,8 +89,12 @@ class BooksDataSource:
                 default -- same as 'title' (that is, if sort_by is anything other than 'year'
                             or 'title', just do the same thing you would do for 'title')
         '''
-
-        return []
+        results = []
+        search_text = search_text.lower()
+        for book in self.bookList:
+            if search_text in book.title.lower():
+                results.append(book)
+        return sorted(results, key=attrgetter("title", "publication_year"))
 
     def books_between_years(self, start_year=None, end_year=None):
         ''' Returns a list of all the Book objects in this data source whose publication
@@ -103,7 +107,26 @@ class BooksDataSource:
             during start_year should be included. If both are None, then all books
             should be included.
         '''
-        return []
+        results = []
+        if isinstance(start_year, str) or isinstance(end_year, str):
+            print("Year range not valid: expecting an integer for year range")
+        else:
+            if start_year == None and end_year == None:
+                results = bookList
+            elif start_year == None:
+                for book in self.bookList:
+                    if book.publication_year <= end_year:
+                        results.append(book)
+            elif end_year == None:
+                for book in self.bookList:
+                    if book.publication_year >= start_year:
+                        results.append(book)
+            else:
+                for book in self.bookList:
+                    if book.publication_year >= start_year and book.publication_year <= end_year:
+                        results.append(book)
+                        
+        return sorted(results, key=attrgetter("publication_year", "title"))
 
     def newAuthor(self, lastName, firstName, years):
         ''' Returns an author object corresponding to the information given. If an author by the
