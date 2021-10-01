@@ -94,16 +94,19 @@ class BooksDataSource:
                             or 'title', just do the same thing you would do for 'title')
         '''
         results = []
-        search_text = search_text.lower()
-        for book in self.bookList:
-            if search_text in book.title.lower():
-                results.append(book)
-        if sort_by == "title":
-            return sorted(results, key=attrgetter("title", "publication_year"))
-        elif sort_by == "year":
-            return sorted(results, key=attrgetter("publication_year", "title"))
+        if search_text == None:
+            return sorted(self.bookList, key=attrgetter("title", "publication_year"))
         else:
-            return [1, "Unrecognizable sort order: expecting either 'title' or 'year'. Type -h for help."]
+            search_text = search_text.lower()
+            for book in self.bookList:
+                if search_text in book.title.lower():
+                    results.append(book)
+            if sort_by == "title":
+                return sorted(results, key=attrgetter("title", "publication_year"))
+            elif sort_by == "year":
+                return sorted(results, key=attrgetter("publication_year", "title"))
+            else:
+                return [1, "Unrecognizable sort order: expecting either 'title' or 'year'. Type -h for help."]
 
     def books_between_years(self, start_year=None, end_year=None):
         ''' Returns a list of all the Book objects in this data source whose publication
@@ -126,7 +129,7 @@ class BooksDataSource:
             return [1, "Year range not valid: expecting an integer for year range. Type -h for help."]
 
         if start_year == None and end_year == None:
-            results = bookList
+            results = self.bookList
         elif start_year == None:
             for book in self.bookList:
                 if book.publication_year <= end_year:
