@@ -71,7 +71,7 @@ class BooksDataSource:
         '''
         results = []
         if search_text == None:
-            return self.authorList
+            return sorted(self.authorList, key=attrgetter("surname", "given_name"))
         else:
             search_text = search_text.lower()
             for author in self.authorList:
