@@ -117,10 +117,9 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertTrue(books[1] == Book('The Tenant of Wildfell Hall'))
 
     def test_badArg(self):
-        #not totally sure what would happen here...
         books = self.data_source.books_between_years("", 1850)
         self.assertTrue(len(books) == 2)
-        self.assertTrue(books[0] == Book('Neverwhere'))
-        self.assertTrue(books[1] == Book('Thief of Time'))
+        self.assertTrue(books[0] == 1)
+
 if __name__ == '__main__':
     unittest.main()
