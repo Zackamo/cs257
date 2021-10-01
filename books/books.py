@@ -3,6 +3,8 @@
     Zack Johnson and Alia Babinet, September 30, 2021
 
     Searches the books data set using BooksDataSource.
+    For use in the "books" assignment at the beginning of Carleton's
+    CS 257 Software Design class, Fall 2021.
 '''
 import booksdatasource
 import sys
@@ -48,6 +50,8 @@ def parseCommandLine(dataSource):
         print(f'Use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.')
 
 def displayAuthors(dataSource):
+    '''manages retrieving and displaying results of an author search
+    '''
     if (len(sys.argv) == 2):
         results = dataSource.authors()
     else:
@@ -60,6 +64,8 @@ def displayAuthors(dataSource):
         print(entry)
 
 def displayBooks(dataSource):
+    '''manages retrieving and displaying results of a title search
+    '''
     if (len(sys.argv) == 2):
         results = dataSource.books()
     elif (len(sys.argv) == 3):
@@ -71,6 +77,8 @@ def displayBooks(dataSource):
         print(formatBook(book))
 
 def displayYears(dataSource):
+    '''manages retrieving and displaying results of a publication year search
+    '''
     if (len(sys.argv) == 2):
         results = dataSource.books_between_years()
     elif (len(sys.argv) == 3):
@@ -93,6 +101,9 @@ def validateResults(resultList):
         reportError(resultList[1])
 
 def formatBook(book, includeAuthor=True):
+    ''' formats the given book as (default): "title", author and author, year.
+        or, if includeAuthor is False, as: "title", year.
+    '''
     entry = f'"{book.title}"'
     if(includeAuthor):
         entry += f', {book.authors[0].given_name} {book.authors[0].surname}'
@@ -102,11 +113,15 @@ def formatBook(book, includeAuthor=True):
     return entry
 
 def reportError(message):
+    '''prints given error message plus direction to the --help
+    '''
     print(message)
     print(f'Use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.')
     sys.exit()
 
 def getHelp():
+    '''displays the documentation (reads and prints usage.txt)
+    '''
     f = open('usage.txt', 'r')
     usageStatement = f.read()
     print(usageStatement)
