@@ -71,7 +71,7 @@ class BooksDataSource:
         '''
         results = []
         if search_text == None:
-            return authorList
+            return self.authorList
         else:
             search_text = search_text.lower()
             for author in self.authorList:
