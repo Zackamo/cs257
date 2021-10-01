@@ -7,7 +7,8 @@ SYNOPSIS
 DESCRIPTION
 
 -a,  --search-author keyword
-	prints a list of books containing keyword in the author's name in alphabetical order by author's surname
+	prints a list of authors whose surname or given name contain keyword, in alphabetical order (by surname).
+	For each author, prints a list of their books
 
 -t,  --search-title keyword [title | year]
 	prints a list of books containing keyword in the title. Sorts the results in alphabetical order by title
