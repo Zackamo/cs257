@@ -40,36 +40,49 @@ def parseCommandLine(dataSource):
             statement += f'Use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
 
 def displayAuthors(dataSource):
-    results = dataSource.authors(sys.argv[2])
-    if (type(results[0]) == type(1)):
-        reportError(results[1])
+    if (len(sys.argv) == 2):
+        results = dataSource.authors()
+    else:
+        results = dataSource.authors(sys.argv[2])
+    validateResults(results)
     for author in results:
         entry = f'{author.surname}, {author.given_name} ({author.birth_year}-{author.death_year}). \n'
         for book in author.writtenWorks:
             entry += f'        {formatBook(book, includeAuthor=False)}\n'
         print(entry)
 
-
 def displayBooks(dataSource):
-    if (len(sys.argv) == 3):
+    if (len(sys.argv) == 2):
+        results = dataSource.books()
+    elif (len(sys.argv) == 3):
         results = dataSource.books(sys.argv[2])
     else:
         results = dataSource.books(sys.argv[2], sys.argv[3])
-
-    if (type(results[0]) == type(1)):
-        reportError(results[1])
+    validateResults(results)
     for book in results:
         print(formatBook(book))
 
 def displayYears(dataSource):
-    if (len(sys.argv) == 3):
+    if (len(sys.argv) == 2):
+        results = dataSource.books_between_years()
+    elif (len(sys.argv) == 3):
         results = dataSource.books_between_years(sys.argv[2])
     else:
         results = dataSource.books_between_years(sys.argv[2], sys.argv[3])
-    if (type(results[0]) == type(1)):
-        reportError(results[1])
+    validateResults(results)
     for book in results:
         print(formatBook(book))
+
+def validateResults(resultList):
+    '''Insures the given list of results is not empty and not the result
+        of an error (denoted by an int in the first element)
+    '''
+    if (len(resultList) < 1):
+        print('No results were found for those search terms. Double check your search and try again.')
+        print(f'or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.')
+        sys.exit()
+    if (type(resultList[0]) == type(1)):
+        reportError(resultList[1])
 
 def formatBook(book, includeAuthor=True):
     entry = f'{book.title}'
@@ -82,6 +95,7 @@ def formatBook(book, includeAuthor=True):
 
 def reportError(message):
     print(message)
+    print(f'Use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.')
     sys.exit()
 
 def getHelp():
