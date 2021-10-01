@@ -22,22 +22,27 @@ def parseCommandLine(dataSource):
             displayAuthors(dataSource)
         else:
             statement = f'Usage: {sys.argv[0]} -a search_string \n'
-            statement += 'searches and prints all authors in booksdatasource whose surname or given name contain search_string. \n \n'
-            statement += f'Use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
+            statement += '    searches and prints all authors in booksdatasource whose surname or given name contain search_string. \n'
+            statement += '    if search_string contains spaces, enclose it in quotes e.g: "long string". \n \n'
+            statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
+            print(statement)
     elif (sys.argv[1] in bookFlags):
         if (len(sys.argv) <= 4):
             displayBooks(dataSource)
         else:
             statement = f'Usage: {sys.argv[0]} -t search_string [title | year] \n'
-            statement += 'searches and prints all books in booksdatasource whose title contains search_string. \n \n'
-            statement += f'Use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
+            statement += '    searches and prints all books in booksdatasource whose title contains search_string. \n'
+            statement += '    if search_string contains spaces, enclose it in quotes e.g: "long string". \n \n'
+            statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
+            print(statement)
     elif (sys.argv[1] in yearFlags):
         if (len(sys.argv) <= 4):
             displayYears(dataSource)
         else:
             statement = f'Usage: {sys.argv[0]} -y start_year end_year \n'
             statement += '    searches and prints all books in booksdatasource published in or between start_year and end_year. \n \n'
-            statement += f'Use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
+            statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
+            print(statement)
 
 def displayAuthors(dataSource):
     if (len(sys.argv) == 2):
@@ -85,7 +90,7 @@ def validateResults(resultList):
         reportError(resultList[1])
 
 def formatBook(book, includeAuthor=True):
-    entry = f'{book.title}'
+    entry = f'"{book.title}"'
     if(includeAuthor):
         entry += f', {book.authors[0].given_name} {book.authors[0].surname}'
         for i in range(1, len(book.authors)):
