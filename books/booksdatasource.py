@@ -70,14 +70,16 @@ class BooksDataSource:
             by surname, breaking ties using given name (e.g. Ann Brontë comes before Charlotte Brontë).
         '''
         results = []
-
-        search_text = search_text.lower()
-        for author in self.authorList:
-            if search_text in author.surname.lower():
-                results.append(author)
-            elif search_text in author.given_name.lower():
-                results.append(author)
-        return sorted(results, key=attrgetter("surname", "given_name"))
+        if search_text == None:
+            return authorList
+        else:
+            search_text = search_text.lower()
+            for author in self.authorList:
+                if search_text in author.surname.lower():
+                    results.append(author)
+                elif search_text in author.given_name.lower():
+                    results.append(author)
+            return sorted(results, key=attrgetter("surname", "given_name"))
 
     def books(self, search_text=None, sort_by='title'):
         ''' Returns a list of all the Book objects in this data source whose
