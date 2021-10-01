@@ -114,23 +114,28 @@ class BooksDataSource:
             should be included.
         '''
         results = []
-        if isinstance(start_year, str) or isinstance(end_year, str):
+        try:
+            if start_year != None:
+                start_year = int(start_year)
+            if end_year != None:
+                end_year = int(end_year)
+        except ValueError:
             return [1, "Year range not valid: expecting an integer for year range"]
+            
+        if start_year == None and end_year == None:
+            results = bookList
+        elif start_year == None:
+            for book in self.bookList:
+                if book.publication_year <= end_year:
+                    results.append(book)
+        elif end_year == None:
+            for book in self.bookList:
+                if book.publication_year >= start_year:
+                    results.append(book)
         else:
-            if start_year == None and end_year == None:
-                results = bookList
-            elif start_year == None:
-                for book in self.bookList:
-                    if book.publication_year <= end_year:
-                        results.append(book)
-            elif end_year == None:
-                for book in self.bookList:
-                    if book.publication_year >= start_year:
-                        results.append(book)
-            else:
-                for book in self.bookList:
-                    if book.publication_year >= start_year and book.publication_year <= end_year:
-                        results.append(book)
+            for book in self.bookList:
+                if book.publication_year >= start_year and book.publication_year <= end_year:
+                    results.append(book)
 
         return sorted(results, key=attrgetter("publication_year", "title"))
 
