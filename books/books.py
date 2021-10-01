@@ -43,6 +43,9 @@ def parseCommandLine(dataSource):
             statement += '    searches and prints all books in booksdatasource published in or between start_year and end_year. \n \n'
             statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
             print(statement)
+    else:
+        print(f'Unrecognized Flag: {sys.argv[0]} {sys.argv[1]}')
+        print(f'Use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.')
 
 def displayAuthors(dataSource):
     if (len(sys.argv) == 2):
