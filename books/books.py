@@ -19,16 +19,16 @@ def validate_results(result_list):
         of an error (denoted by an int in the first element)
     '''
     if (len(result_list) < 1):
-        report_error('No results were found for those search terms. Double check your search and try again.')
+        report_error('No results were found for those search terms. If this was unexpected, double check your search and try again.')
     if (type(result_list[0]) == type(1)):
         report_error(result_list[1])
 
 def display_authors(data_source):
     '''manages retrieving and displaying results of an author search
     '''
-    if (len(sys.argv) == 2):
+    if (len(sys.argv) == 2): # no search term given
         results = data_source.authors()
-    else:
+    else: # search term given
         results = data_source.authors(sys.argv[2])
     validate_results(results)
     for author in results:
@@ -39,11 +39,11 @@ def display_authors(data_source):
 def display_books(data_source):
     '''manages retrieving and displaying results of a title search
     '''
-    if (len(sys.argv) == 2):
+    if (len(sys.argv) == 2): # no Search Term given
         results = data_source.books()
-    elif (len(sys.argv) == 3):
+    elif (len(sys.argv) == 3): # Search Term, but no Sorting Flag
         results = data_source.books(sys.argv[2])
-    else:
+    else: # both a Search term and Sorting Flag
         results = data_source.books(sys.argv[2], sys.argv[3])
     validate_results(results)
     for book in results:
@@ -52,11 +52,11 @@ def display_books(data_source):
 def display_years(data_source):
     '''manages retrieving and displaying results of a publication year search
     '''
-    if (len(sys.argv) == 2):
+    if (len(sys.argv) == 2): # no Search Years given
         results = data_source.books_between_years()
-    elif (len(sys.argv) == 3):
+    elif (len(sys.argv) == 3): # one Year given
         results = data_source.books_between_years(sys.argv[2])
-    else:
+    else: # both years given
         results = data_source.books_between_years(sys.argv[2], sys.argv[3])
     validate_results(results)
     for book in results:

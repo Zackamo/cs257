@@ -112,12 +112,10 @@ class BooksDataSource:
             for book in self.book_list:
                 if search_text in book.title.lower():
                     results.append(book)
-            if sort_by == "title":
-                return sorted(results, key=attrgetter("title", "publication_year"))
-            elif sort_by == "year":
+            if sort_by == 'year':
                 return sorted(results, key=attrgetter("publication_year", "title"))
             else:
-                return [1, "Unrecognizable sort order: expecting either 'title' or 'year'."]
+                return sorted(results, key=attrgetter("title", "publication_year"))
 
     def books_between_years(self, start_year=None, end_year=None):
         ''' Returns a list of all the Book objects in this data source whose publication
