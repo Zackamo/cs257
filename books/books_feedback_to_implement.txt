@@ -1,41 +1,32 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2580
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red240\green240\blue240;}
-{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c95294\c95294\c95294;}
-\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\deftab720
-\pard\pardeftab720\partightenfactor0
+Little commenting
+	Both booksdatasource.py and books.py are dense and not easily
+	scannable for meaning, so some comments might be helpful for readers
 
-\f0\fs29\fsmilli14745 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Little commenting\
-	Both booksdatasource.py and books.py are dense and not easily\
-	scannable for meaning, so some comments might be helpful for readers\
-\
-Specifically, on the booksdatasource.py side, the authorStringToList comment says pretty much the exact same thing as the title and just takes up extra space. Also, many of the comments on the books.py side (the display ones, reportError, getHelp) don\'92t really add anything that would not have been clear from reading the name of the routine. \
-\
-In books.py, you have 11 lines that have something to do with \'91statement\'92 variables that make up your usage statements. This code does a good job creating the usage statements, but it would be better if it could be condensed, maybe through more formatting or creating another function to create the statements.\
-	Helper function?\
-\
-I feel like some of the helper functions are unnecessary or maybe could be combined to make fewer functions? The main one that I see is authorStringtoList it feel like that can just be used in the code as is, even if the splitting may be used a couple times.\
-\
- *Naming convention is not completely accurate(parseCommandLine does more then just parse command line)\
-\
-In general books.py seems really long for its functionality which makes it hard to read. Is the length of this code justified by its extra features/more accurate CLI.\
-\
-For books.py, I personally would put the validateResults above the other methods since validateResults is used in upcoming methods.  \
-\
-In the documentation for books_between_years, you have the specification that if\
-start_year is none, you get the list of books published up through end_year.\
-However, if you only input one year in the CLI, there is no way to tell your\
-program that it is the end_year and not the start_year. Does that make sense?\
-Basically as it is right now, that case is impossible, so maybe find a way to\
-specify in your CLI how to get the input to be the end year.\
-\
-Also with your CLI, it contradicts the books method in booksdatasource.py since\
-the method documentation says that it will accept and run with a sort_by\
-parameter other than \'91year\'92 or \'91title\'92 , but your program will return an error\
-message when using an unknown search flag\
-\
-Break up parseCommandLine and make main more of an outline of what the program is doing. Have the convoluted parts be higher up \
-\
-PEP 8 Naming Styles-> underscores for everything but classes}
+Specifically, on the booksdatasource.py side, the authorStringToList comment says pretty much the exact same thing as the title and just takes up extra space. Also, many of the comments on the books.py side (the display ones, reportError, getHelp) don’t really add anything that would not have been clear from reading the name of the routine.
+
+In books.py, you have 11 lines that have something to do with ‘statement’ variables that make up your usage statements. This code does a good job creating the usage statements, but it would be better if it could be condensed, maybe through more formatting or creating another function to create the statements.
+	Helper function?
+
+I feel like some of the helper functions are unnecessary or maybe could be combined to make fewer functions? The main one that I see is authorStringtoList it feel like that can just be used in the code as is, even if the splitting may be used a couple times.
+
+ *Naming convention is not completely accurate(parseCommandLine does more then just parse command line)
+
+In general books.py seems really long for its functionality which makes it hard to read. Is the length of this code justified by its extra features/more accurate CLI.
+
+For books.py, I personally would put the validateResults above the other methods since validateResults is used in upcoming methods.
+
+In the documentation for books_between_years, you have the specification that if
+start_year is none, you get the list of books published up through end_year.
+However, if you only input one year in the CLI, there is no way to tell your
+program that it is the end_year and not the start_year. Does that make sense?
+Basically as it is right now, that case is impossible, so maybe find a way to
+specify in your CLI how to get the input to be the end year.
+
+Also with your CLI, it contradicts the books method in booksdatasource.py since
+the method documentation says that it will accept and run with a sort_by
+parameter other than ‘year’ or ‘title’ , but your program will return an error
+message when using an unknown search flag
+
+Break up parseCommandLine and make main more of an outline of what the program is doing. Have the convoluted parts be higher up
+
+PEP 8 Naming Styles-> underscores for everything but classes
