@@ -6,16 +6,21 @@ SYNOPSIS
 
 DESCRIPTION
 
--a,  --search-author keyword
-	prints a list of authors whose surname or given name contain keyword, in alphabetical order (by surname).
-	For each author, prints a list of their books
+-a,  --search-author [keyword]
+	Prints a list of authors whose surname or given name contain <keyword>, in alphabetical order (by surname).
+	For each author, prints a list of their books. If no <keyword> is given, prints all authors in the dataset.
+	If <keyword> contains spaces, enclose it in quotes. For example: "longer keyword".
 
--t,  --search-title keyword [title | year]
-	prints a list of books containing keyword in the title. Sorts the results in alphabetical order by title
-	by default or if title is selected or chronologically if year is selected.
+-t,  --search-title [keyword] [title | year]
+	Prints a list of books containing <keyword> in the title. If no <keyword> is given, prints all books in
+	the dataset.
+	Sorts the results chronologically if <year> is selected or in alphabetical order by title if
+	<title> is selected or no flag is provided.
 
--y,  --search-year start_year end_year
-	prints a list of books published in or between start_year and end_year in chronological order
+-y,  --search-year [start_year] [end_year]
+	Prints a list of books published in or between <start_year> and <end_year> in chronological order.
+	If no years are given, prints all books in the dataset. If only one year is given prints all books
+	published in or after that year.
 
 -h, ?, --help
 	prints this usage statement and exits
