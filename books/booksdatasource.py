@@ -23,6 +23,9 @@ class Author:
         ''' For simplicity, we're going to assume that no two authors have the same name. '''
         return self.surname == other.surname and self.given_name == other.given_name
 
+    def __str__(self):
+        return f'{self.surname}, {self.given_name} ({self.birth_year}-{self.death_year}).'
+
 class Book:
     def __init__(self, title='', publication_year=None, authors=[]):
         ''' Note that the self.authors instance variable is a list of
@@ -36,6 +39,14 @@ class Book:
             no two books have the same title, so "same title" is the same
             thing as "same book". '''
         return self.title == other.title
+
+    def __str__(self):
+        entry = f'"{self.title}"'
+        entry += f', {self.authors[0].given_name} {self.authors[0].surname}'
+        for i in range(1, len(self.authors)):
+            entry += f" and {self.authors[i].given_name} {self.authors[i].surname}"
+        entry += f', {self.publication_year}.'
+        return entry
 
 class BooksDataSource:
     def __init__(self, books_csv_file_name):

@@ -32,10 +32,9 @@ def display_authors(data_source):
         results = data_source.authors(sys.argv[2])
     validate_results(results)
     for author in results:
-        entry = f'{author.surname}, {author.given_name} ({author.birth_year}-{author.death_year}). \n'
+        print(author)
         for book in author.written_works:
-            entry += f'        {format_book(book, include_author=False)}\n'
-        print(entry)
+            print(f'        "{book.title}", {book.publication_year}')
 
 def display_books(data_source):
     '''manages retrieving and displaying results of a title search
@@ -48,7 +47,7 @@ def display_books(data_source):
         results = data_source.books(sys.argv[2], sys.argv[3])
     validate_results(results)
     for book in results:
-        print(format_book(book))
+        print(book)
 
 def display_years(data_source):
     '''manages retrieving and displaying results of a publication year search
@@ -61,19 +60,7 @@ def display_years(data_source):
         results = data_source.books_between_years(sys.argv[2], sys.argv[3])
     validate_results(results)
     for book in results:
-        print(format_book(book))
-
-def format_book(book, include_author=True):
-    ''' formats the given book as (default): "title", author and author, year.
-        or, if includeAuthor is False, as: "title", year.
-    '''
-    entry = f'"{book.title}"'
-    if(include_author):
-        entry += f', {book.authors[0].given_name} {book.authors[0].surname}'
-        for i in range(1, len(book.authors)):
-            entry += f" and {book.authors[i].given_name} {book.authors[i].surname}"
-    entry += f', {book.publication_year}.'
-    return entry
+        print(book)
 
 def report_error(message):
     '''prints given error message plus direction to the --help
