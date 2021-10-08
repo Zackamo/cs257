@@ -172,15 +172,16 @@ class BooksDataSource:
         return author
 
     def parse_author_string(self, author_string):
-        ''' Returns each word in author_string as an element of a list
+        ''' Returns a list of Author objects corresponding to the given string:
+            Parses a string containing one or more authors (separated by "and")
+            each with First and Last names, separated by spaces and
+            followed by birth and death years of the form (birth-death) or (birth-).
         '''
         split_author = author_string.split(' ')
         return self.parse_author_string_recursive(split_author)
 
     def parse_author_string_recursive(self, author_list):
-        ''' Returns an Author object corresponding to the given string:
-            Parses a string containing an authors First and Last names, separated by spaces
-            followed by birth and death years of the form (birth-death) or (birth-).
+        ''' Recursive helper function to parse_author_string
         '''
         authors = []
         length = len(author_list)
