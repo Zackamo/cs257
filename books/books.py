@@ -14,49 +14,12 @@ BOOK_FLAGS = ['-t','--search-title']
 YEAR_FLAGS = ['-y','--search-year']
 HELP_FLAGS = ['-h','-?','--help']
 
-def parse_command_line(data_source):
-    ''' Checks command syntax and routes to appropriate routine
-    '''
-    if (sys.argv[1] in HELP_FLAGS or len(sys.argv) <= 1):
-        get_help()
-    elif (sys.argv[1] in AUTHOR_FLAGS):
-        if (len(sys.argv) <= 3):
-            display_authors(data_source)
-        else:
-            statement = f'Usage: {sys.argv[0]} -a search_string \n'
-            statement += '    searches and prints all authors in booksdatasource whose surname or given name contain search_string. \n'
-            statement += '    if search_string contains spaces, enclose it in quotes e.g: "long string". \n \n'
-            statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
-            print(statement)
-    elif (sys.argv[1] in BOOK_FLAGS):
-        if (len(sys.argv) <= 4):
-            display_books(data_source)
-        else:
-            statement = f'Usage: {sys.argv[0]} -t search_string [title | year] \n'
-            statement += '    searches and prints all books in booksdatasource whose title contains search_string. \n'
-            statement += '    if search_string contains spaces, enclose it in quotes e.g: "long string". \n \n'
-            statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
-            print(statement)
-    elif (sys.argv[1] in YEAR_FLAGS):
-        if (len(sys.argv) <= 4):
-            display_years(data_source)
-        else:
-            statement = f'Usage: {sys.argv[0]} -y start_year end_year \n'
-            statement += '    searches and prints all books in booksdatasource published in or between start_year and end_year. \n \n'
-            statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
-            print(statement)
-    else:
-        print(f'Unrecognized Flag: {sys.argv[0]} {sys.argv[1]}')
-        print(f'Use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.')
-
 def validate_results(result_list):
     '''Insures the given list of results is not empty and not the result
         of an error (denoted by an int in the first element)
     '''
     if (len(result_list) < 1):
-        print('No results were found for those search terms. Double check your search and try again.')
-        print(f'or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.')
-        sys.exit()
+        report_error('No results were found for those search terms. Double check your search and try again.')
     if (type(result_list[0]) == type(1)):
         report_error(result_list[1])
 
@@ -119,18 +82,63 @@ def report_error(message):
     print(f'Use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.')
     sys.exit()
 
-def get_help():
-    '''displays the documentation (reads and prints usage.txt)
+def get_help(help_flag=None):
+    ''' displays a helpful hint depending on the help flag or the entire
+        documentation (reads and prints usage.txt) if no flag is given.
     '''
-    f = open('usage.txt', 'r')
-    usage_statement = f.read()
-    print(usage_statement)
-    f.close()
-    sys.exit()
+    match help_flag:
+        case 'author_search_help':
+            statement = f'Usage: {sys.argv[0]} -a search_string \n'
+            statement += '    searches and prints all authors in booksdatasource whose surname or given name contain search_string. \n'
+            statement += '    if search_string contains spaces, enclose it in quotes e.g: "long string". \n \n'
+            statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
+            print(statement)
+
+        case 'book_search_help':
+            statement = f'Usage: {sys.argv[0]} -t search_string [title | year] \n'
+            statement += '    searches and prints all books in booksdatasource whose title contains search_string. \n'
+            statement += '    if search_string contains spaces, enclose it in quotes e.g: "long string". \n \n'
+            statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
+            print(statement)
+
+        case 'year_search_help':
+            statement = f'Usage: {sys.argv[0]} -y start_year end_year \n'
+            statement += '    searches and prints all books in booksdatasource published in or between start_year and end_year. \n \n'
+            statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
+            print(statement)
+
+        case _:
+            f = open('usage.txt', 'r')
+            usage_statement = f.read()
+            print(usage_statement)
+            f.close()
+            sys.exit()
 
 def main():
     data_source = booksdatasource.BooksDataSource('books1.csv')
-    parse_command_line(data_source)
+    if (sys.argv[1] in HELP_FLAGS or len(sys.argv) <= 1):
+        get_help()
+
+    elif (sys.argv[1] in AUTHOR_FLAGS):
+        if (len(sys.argv) <= 3):
+            display_authors(data_source)
+        else:
+            get_help('author_search_help')
+
+    elif (sys.argv[1] in BOOK_FLAGS):
+        if (len(sys.argv) <= 4):
+            display_books(data_source)
+        else:
+            get_help('book_search_help')
+
+    elif (sys.argv[1] in YEAR_FLAGS):
+        if (len(sys.argv) <= 4):
+            display_years(data_source)
+        else:
+            get_help('year_search_help')
+
+    else:
+        report_error(f'Unrecognized Flag: {sys.argv[0]} {sys.argv[1]}')
 
 
 if __name__ == '__main__':
