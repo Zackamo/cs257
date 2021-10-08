@@ -9,37 +9,37 @@
 import booksdatasource
 import sys
 
-authorFlags = ['-a','--search-author']
-bookFlags = ['-t','--search-title']
-yearFlags = ['-y','--search-year']
-helpFlags = ['-h','-?','--help']
+AUTHOR_FLAGS = ['-a','--search-author']
+BOOK_FLAGS = ['-t','--search-title']
+YEAR_FLAGS = ['-y','--search-year']
+HELP_FLAGS = ['-h','-?','--help']
 
-def parseCommandLine(dataSource):
+def parse_command_line(data_source):
     ''' Checks command syntax and routes to appropriate routine
     '''
-    if (sys.argv[1] in helpFlags or len(sys.argv) <= 1):
-        getHelp()
-    elif (sys.argv[1] in authorFlags):
+    if (sys.argv[1] in HELP_FLAGS or len(sys.argv) <= 1):
+        get_help()
+    elif (sys.argv[1] in AUTHOR_FLAGS):
         if (len(sys.argv) <= 3):
-            displayAuthors(dataSource)
+            display_authors(data_source)
         else:
             statement = f'Usage: {sys.argv[0]} -a search_string \n'
             statement += '    searches and prints all authors in booksdatasource whose surname or given name contain search_string. \n'
             statement += '    if search_string contains spaces, enclose it in quotes e.g: "long string". \n \n'
             statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
             print(statement)
-    elif (sys.argv[1] in bookFlags):
+    elif (sys.argv[1] in BOOK_FLAGS):
         if (len(sys.argv) <= 4):
-            displayBooks(dataSource)
+            display_books(data_source)
         else:
             statement = f'Usage: {sys.argv[0]} -t search_string [title | year] \n'
             statement += '    searches and prints all books in booksdatasource whose title contains search_string. \n'
             statement += '    if search_string contains spaces, enclose it in quotes e.g: "long string". \n \n'
             statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
             print(statement)
-    elif (sys.argv[1] in yearFlags):
+    elif (sys.argv[1] in YEAR_FLAGS):
         if (len(sys.argv) <= 4):
-            displayYears(dataSource)
+            display_years(data_source)
         else:
             statement = f'Usage: {sys.argv[0]} -y start_year end_year \n'
             statement += '    searches and prints all books in booksdatasource published in or between start_year and end_year. \n \n'
@@ -49,88 +49,88 @@ def parseCommandLine(dataSource):
         print(f'Unrecognized Flag: {sys.argv[0]} {sys.argv[1]}')
         print(f'Use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.')
 
-def displayAuthors(dataSource):
-    '''manages retrieving and displaying results of an author search
-    '''
-    if (len(sys.argv) == 2):
-        results = dataSource.authors()
-    else:
-        results = dataSource.authors(sys.argv[2])
-    validateResults(results)
-    for author in results:
-        entry = f'{author.surname}, {author.given_name} ({author.birth_year}-{author.death_year}). \n'
-        for book in author.writtenWorks:
-            entry += f'        {formatBook(book, includeAuthor=False)}\n'
-        print(entry)
-
-def displayBooks(dataSource):
-    '''manages retrieving and displaying results of a title search
-    '''
-    if (len(sys.argv) == 2):
-        results = dataSource.books()
-    elif (len(sys.argv) == 3):
-        results = dataSource.books(sys.argv[2])
-    else:
-        results = dataSource.books(sys.argv[2], sys.argv[3])
-    validateResults(results)
-    for book in results:
-        print(formatBook(book))
-
-def displayYears(dataSource):
-    '''manages retrieving and displaying results of a publication year search
-    '''
-    if (len(sys.argv) == 2):
-        results = dataSource.books_between_years()
-    elif (len(sys.argv) == 3):
-        results = dataSource.books_between_years(sys.argv[2])
-    else:
-        results = dataSource.books_between_years(sys.argv[2], sys.argv[3])
-    validateResults(results)
-    for book in results:
-        print(formatBook(book))
-
-def validateResults(resultList):
+def validate_results(result_list):
     '''Insures the given list of results is not empty and not the result
         of an error (denoted by an int in the first element)
     '''
-    if (len(resultList) < 1):
+    if (len(result_list) < 1):
         print('No results were found for those search terms. Double check your search and try again.')
         print(f'or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.')
         sys.exit()
-    if (type(resultList[0]) == type(1)):
-        reportError(resultList[1])
+    if (type(result_list[0]) == type(1)):
+        report_error(result_list[1])
 
-def formatBook(book, includeAuthor=True):
+def display_authors(data_source):
+    '''manages retrieving and displaying results of an author search
+    '''
+    if (len(sys.argv) == 2):
+        results = data_source.authors()
+    else:
+        results = data_source.authors(sys.argv[2])
+    validate_results(results)
+    for author in results:
+        entry = f'{author.surname}, {author.given_name} ({author.birth_year}-{author.death_year}). \n'
+        for book in author.written_works:
+            entry += f'        {format_book(book, include_author=False)}\n'
+        print(entry)
+
+def display_books(data_source):
+    '''manages retrieving and displaying results of a title search
+    '''
+    if (len(sys.argv) == 2):
+        results = data_source.books()
+    elif (len(sys.argv) == 3):
+        results = data_source.books(sys.argv[2])
+    else:
+        results = data_source.books(sys.argv[2], sys.argv[3])
+    validate_results(results)
+    for book in results:
+        print(format_book(book))
+
+def display_years(data_source):
+    '''manages retrieving and displaying results of a publication year search
+    '''
+    if (len(sys.argv) == 2):
+        results = data_source.books_between_years()
+    elif (len(sys.argv) == 3):
+        results = data_source.books_between_years(sys.argv[2])
+    else:
+        results = data_source.books_between_years(sys.argv[2], sys.argv[3])
+    validate_results(results)
+    for book in results:
+        print(format_book(book))
+
+def format_book(book, include_author=True):
     ''' formats the given book as (default): "title", author and author, year.
         or, if includeAuthor is False, as: "title", year.
     '''
     entry = f'"{book.title}"'
-    if(includeAuthor):
+    if(include_author):
         entry += f', {book.authors[0].given_name} {book.authors[0].surname}'
         for i in range(1, len(book.authors)):
             entry += f" and {book.authors[i].given_name} {book.authors[i].surname}"
     entry += f', {book.publication_year}.'
     return entry
 
-def reportError(message):
+def report_error(message):
     '''prints given error message plus direction to the --help
     '''
     print(message)
     print(f'Use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.')
     sys.exit()
 
-def getHelp():
+def get_help():
     '''displays the documentation (reads and prints usage.txt)
     '''
     f = open('usage.txt', 'r')
-    usageStatement = f.read()
-    print(usageStatement)
+    usage_statement = f.read()
+    print(usage_statement)
     f.close()
     sys.exit()
 
 def main():
-    dataSource = booksdatasource.BooksDataSource('books1.csv')
-    parseCommandLine(dataSource)
+    data_source = booksdatasource.BooksDataSource('books1.csv')
+    parse_command_line(data_source)
 
 
 if __name__ == '__main__':
