@@ -2,18 +2,30 @@ Little commenting
 	Both booksdatasource.py and books.py are dense and not easily
 	scannable for meaning, so some comments might be helpful for readers
 
-Specifically, on the booksdatasource.py side, the authorStringToList comment says pretty much the exact same thing as the title and just takes up extra space. Also, many of the comments on the books.py side (the display ones, reportError, getHelp) don’t really add anything that would not have been clear from reading the name of the routine.
+Specifically, on the booksdatasource.py side, the authorStringToList comment says
+pretty much the exact same thing as the title and just takes up extra space. Also,
+many of the comments on the books.py side (the display ones, reportError, getHelp)
+don’t really add anything that would not have been clear from reading the name of the routine.
 
-In books.py, you have 11 lines that have something to do with ‘statement’ variables that make up your usage statements. This code does a good job creating the usage statements, but it would be better if it could be condensed, maybe through more formatting or creating another function to create the statements.
+In books.py, you have 11 lines that have something to do with ‘statement’ variables
+that make up your usage statements. This code does a good job creating the usage
+statements, but it would be better if it could be condensed, maybe through more
+formatting or creating another function to create the statements.
 	Helper function?
 
-I feel like some of the helper functions are unnecessary or maybe could be combined to make fewer functions? The main one that I see is authorStringtoList it feel like that can just be used in the code as is, even if the splitting may be used a couple times.
+I feel like some of the helper functions are unnecessary or maybe could be
+combined to make fewer functions? The main one that I see is authorStringtoList
+it feel like that can just be used in the code as is, even if the splitting may
+be used a couple times.
 
- *Naming convention is not completely accurate(parseCommandLine does more then just parse command line)
+*Naming convention is not completely accurate(parseCommandLine does more then
+just parse command line)
 
-In general books.py seems really long for its functionality which makes it hard to read. Is the length of this code justified by its extra features/more accurate CLI.
+In general books.py seems really long for its functionality which makes it hard
+to read. Is the length of this code justified by its extra features/more accurate CLI.
 
-For books.py, I personally would put the validateResults above the other methods since validateResults is used in upcoming methods.
+For books.py, I personally would put the validateResults above the other methods
+since validateResults is used in upcoming methods.
 
 In the documentation for books_between_years, you have the specification that if
 start_year is none, you get the list of books published up through end_year.
@@ -27,6 +39,7 @@ the method documentation says that it will accept and run with a sort_by
 parameter other than ‘year’ or ‘title’ , but your program will return an error
 message when using an unknown search flag
 
-Break up parseCommandLine and make main more of an outline of what the program is doing. Have the convoluted parts be higher up
+Break up parseCommandLine and make main more of an outline of what the program
+is doing. Have the convoluted parts be higher up
 
 PEP 8 Naming Styles-> underscores for everything but classes

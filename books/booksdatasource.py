@@ -17,7 +17,7 @@ class Author:
         self.given_name = given_name
         self.birth_year = birth_year
         self.death_year = death_year
-        self.writtenWorks = []
+        self.written_works = []
 
     def __eq__(self, other):
         ''' For simplicity, we're going to assume that no two authors have the same name. '''
@@ -52,16 +52,16 @@ class BooksDataSource:
             suitable instance variables for the BooksDataSource object containing
             a collection of Author objects and a collection of Book objects.
         '''
-        self.authorList = []
-        self.bookList = []
+        self.author_list = []
+        self.book_list = []
         with open(books_csv_file_name) as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                thisAuthor = self.parseAuthorList(self.authorStringToList(row[2]))
-                newBook = Book(row[0], int(row[1]), thisAuthor)
-                self.bookList.append(newBook)
-                for curAuthor in thisAuthor:
-                    curAuthor.writtenWorks.append(newBook)
+                this_author = self.parse_author_list(self.author_string_to_list(row[2]))
+                new_book = Book(row[0], int(row[1]), this_author)
+                self.book_list.append(new_book)
+                for cur_author in this_author:
+                    cur_author.written_works.append(new_book)
 
     def authors(self, search_text=None):
         ''' Returns a list of all the Author objects in this data source whose names contain
@@ -71,10 +71,10 @@ class BooksDataSource:
         '''
         results = []
         if search_text == None:
-            return sorted(self.authorList, key=attrgetter("surname", "given_name"))
+            return sorted(self.author_list, key=attrgetter("surname", "given_name"))
         else:
             search_text = search_text.lower()
-            for author in self.authorList:
+            for author in self.author_list:
                 if search_text in author.surname.lower():
                     results.append(author)
                 elif search_text in author.given_name.lower():
@@ -95,10 +95,10 @@ class BooksDataSource:
         '''
         results = []
         if search_text == None:
-            return sorted(self.bookList, key=attrgetter("title", "publication_year"))
+            return sorted(self.book_list, key=attrgetter("title", "publication_year"))
         else:
             search_text = search_text.lower()
-            for book in self.bookList:
+            for book in self.book_list:
                 if search_text in book.title.lower():
                     results.append(book)
             if sort_by == "title":
@@ -129,63 +129,63 @@ class BooksDataSource:
             return [1, "Year range not valid: expecting an integer for year range."]
 
         if start_year == None and end_year == None:
-            results = self.bookList
+            results = self.book_list
         elif start_year == None:
-            for book in self.bookList:
+            for book in self.book_list:
                 if book.publication_year <= end_year:
                     results.append(book)
         elif end_year == None:
-            for book in self.bookList:
+            for book in self.book_list:
                 if book.publication_year >= start_year:
                     results.append(book)
         else:
-            for book in self.bookList:
+            for book in self.book_list:
                 if book.publication_year >= start_year and book.publication_year <= end_year:
                     results.append(book)
 
         return sorted(results, key=attrgetter("publication_year", "title"))
 
-    def newAuthor(self, lastName, firstName, years):
+    def new_author(self, last_name, first_name, years):
         ''' Returns an author object corresponding to the information given. If an author by the
-            given name and surname already exists in the authorList, return it. Otherwise add the
-            new author to the authorList and return it.
+            given name and surname already exists in the author_list, return it. Otherwise add the
+            new author to the author_list and return it.
         '''
-        yearList = years[1 : -1].split("-")
-        birthYear, deathYear = yearList[0], yearList[1]
-        author = Author(lastName, firstName, birthYear, deathYear)
+        year_list = years[1 : -1].split("-")
+        birth_year, death_year = year_list[0], year_list[1]
+        author = Author(last_name, first_name, birth_year, death_year)
 
-        for curAuthor in self.authorList:
-            if (curAuthor == author):
-                return curAuthor
-        self.authorList.append(author)
+        for cur_author in self.author_list:
+            if (cur_author == author):
+                return cur_author
+        self.author_list.append(author)
         return author
 
-    def authorStringToList(self, authorString):
-        ''' Returns each word in authorString as an element of a list
+    def author_string_to_list(self, author_string):
+        ''' Returns each word in author_string as an element of a list
         '''
 
-        splitAuthor = authorString.split(' ')
+        splitAuthor = author_string.split(' ')
         return splitAuthor
 
 
-    def parseAuthorList(self, authorList):
+    def parse_author_list(self, author_list):
         ''' Returns an Author object corresponding to the given string:
             Parses a string containing an authors First and Last names, separated by spaces
             followed by birth and death years of the form (birth-death) or (birth-).
         '''
         authors = []
-        length = len(authorList)
+        length = len(author_list)
         if (length == 3):
-            author = self.newAuthor(authorList[1],authorList[0],authorList[2])
+            author = self.new_author(author_list[1],author_list[0],author_list[2])
             authors.append(author)
 
         elif (length == 4):
-            authors.append(self.newAuthor(authorList[2],authorList[0]+' '+authorList[1],authorList[3]))
+            authors.append(self.new_author(author_list[2],author_list[0]+' '+author_list[1],author_list[3]))
         elif (length >= 5):
-            if "and" in authorList:
-                andPos = authorList.index("and")
-                authors = authors + self.parseAuthorList(authorList[ : andPos])
-                authors = authors + self.parseAuthorList(authorList[(andPos + 1) : ])
+            if "and" in author_list:
+                and_pos = author_list.index("and")
+                authors = authors + self.parse_author_list(author_list[ : and_pos])
+                authors = authors + self.parse_author_list(author_list[(and_pos + 1) : ])
 
             else:
                 return [1, "No 'and' in long author string: expecting multiple authors."]
