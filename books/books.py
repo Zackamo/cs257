@@ -86,33 +86,32 @@ def get_help(help_flag=None):
     ''' displays a helpful hint depending on the help flag or the entire
         documentation (reads and prints usage.txt) if no flag is given.
     '''
-    match help_flag:
-        case 'author_search_help':
-            statement = f'Usage: {sys.argv[0]} -a search_string \n'
-            statement += '    searches and prints all authors in booksdatasource whose surname or given name contain search_string. \n'
-            statement += '    if search_string contains spaces, enclose it in quotes e.g: "long string". \n \n'
-            statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
-            print(statement)
+    if help_flag == 'author_search_help':
+        statement = f'Usage: {sys.argv[0]} -a search_string \n'
+        statement += '    searches and prints all authors in booksdatasource whose surname or given name contain search_string. \n'
+        statement += '    if search_string contains spaces, enclose it in quotes e.g: "long string". \n \n'
+        statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
+        print(statement)
 
-        case 'book_search_help':
-            statement = f'Usage: {sys.argv[0]} -t search_string [title | year] \n'
-            statement += '    searches and prints all books in booksdatasource whose title contains search_string. \n'
-            statement += '    if search_string contains spaces, enclose it in quotes e.g: "long string". \n \n'
-            statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
-            print(statement)
+    elif help_flag == 'book_search_help':
+        statement = f'Usage: {sys.argv[0]} -t search_string [title | year] \n'
+        statement += '    searches and prints all books in booksdatasource whose title contains search_string. \n'
+        statement += '    if search_string contains spaces, enclose it in quotes e.g: "long string". \n \n'
+        statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
+        print(statement)
 
-        case 'year_search_help':
-            statement = f'Usage: {sys.argv[0]} -y start_year end_year \n'
-            statement += '    searches and prints all books in booksdatasource published in or between start_year and end_year. \n \n'
-            statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
-            print(statement)
+    elif help_flag == 'year_search_help':
+        statement = f'Usage: {sys.argv[0]} -y start_year end_year \n'
+        statement += '    searches and prints all books in booksdatasource published in or between start_year and end_year. \n \n'
+        statement += f'Or use: {sys.argv[0]} -? or {sys.argv[0]} --help for more information.'
+        print(statement)
 
-        case _:
-            f = open('usage.txt', 'r')
-            usage_statement = f.read()
-            print(usage_statement)
-            f.close()
-            sys.exit()
+    else:
+        f = open('usage.txt', 'r')
+        usage_statement = f.read()
+        print(usage_statement)
+        f.close()
+        sys.exit()
 
 def main():
     data_source = booksdatasource.BooksDataSource('books1.csv')
