@@ -68,7 +68,7 @@ class BooksDataSource:
         with open(books_csv_file_name) as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                this_author = self.parse_author_list(self.author_string_to_list(row[2]))
+                this_author = self.parse_author_string(row[2])
                 new_book = Book(row[0], int(row[1]), this_author)
                 self.book_list.append(new_book)
                 for cur_author in this_author:
@@ -171,15 +171,13 @@ class BooksDataSource:
         self.author_list.append(author)
         return author
 
-    def author_string_to_list(self, author_string):
+    def parse_author_string(self, author_string):
         ''' Returns each word in author_string as an element of a list
         '''
+        split_author = author_string.split(' ')
+        return self.parse_author_string_recursive(split_author)
 
-        splitAuthor = author_string.split(' ')
-        return splitAuthor
-
-
-    def parse_author_list(self, author_list):
+    def parse_author_string_recursive(self, author_list):
         ''' Returns an Author object corresponding to the given string:
             Parses a string containing an authors First and Last names, separated by spaces
             followed by birth and death years of the form (birth-death) or (birth-).
@@ -195,8 +193,8 @@ class BooksDataSource:
         elif (length >= 5):
             if "and" in author_list:
                 and_pos = author_list.index("and")
-                authors = authors + self.parse_author_list(author_list[ : and_pos])
-                authors = authors + self.parse_author_list(author_list[(and_pos + 1) : ])
+                authors = authors + self.parse_author_string_recursive(author_list[ : and_pos])
+                authors = authors + self.parse_author_string_recursive(author_list[(and_pos + 1) : ])
 
             else:
                 return [1, "No 'and' in long author string: expecting multiple authors."]
