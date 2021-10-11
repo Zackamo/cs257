@@ -129,7 +129,7 @@ class BooksDataSource:
             should be included.
         '''
         results = []
-        try:
+        try: #check if the given years are valid
             if start_year != None:
                 start_year = int(start_year)
             if end_year != None:
@@ -183,13 +183,13 @@ class BooksDataSource:
         '''
         authors = []
         length = len(author_list)
-        if (length == 3):
+        if (length == 3): #typical author format
             author = self.new_author(author_list[1],author_list[0],author_list[2])
             authors.append(author)
 
-        elif (length == 4):
+        elif (length == 4): #author with atypical name format
             authors.append(self.new_author(author_list[2],author_list[0]+' '+author_list[1],author_list[3]))
-        elif (length >= 5):
+        elif (length >= 5): #multiple authors
             if "and" in author_list:
                 and_pos = author_list.index("and")
                 authors = authors + self.parse_author_string_recursive(author_list[ : and_pos])
