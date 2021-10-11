@@ -1,6 +1,7 @@
 '''
     books.py
     Zack Johnson and Alia Babinet, September 30, 2021
+    Revised by Zack Johnson and Alia Babinet, October 11, 2021
 
     Searches the books data set using BooksDataSource.
     For use in the "books" assignment at the beginning of Carleton's
