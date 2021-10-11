@@ -1,18 +1,3 @@
-Comments:
-Little commenting
-	Both booksdatasource.py and books.py are dense and not easily
-	scannable for meaning, so some comments might be helpful for readers
-
-Specifically, on the booksdatasource.py side, the authorStringToList comment says
-pretty much the exact same thing as the title and just takes up extra space. Also,
-many of the comments on the books.py side (the display ones, reportError, getHelp)
-don’t really add anything that would not have been clear from reading the name of the routine.
-
-Also with your CLI, it contradicts the books method in booksdatasource.py since
-the method documentation says that it will accept and run with a sort_by
-parameter other than ‘year’ or ‘title’ , but your program will return an error
-message when using an unknown search flag
-
 DONE:
 
 PEP 8 Naming Styles-> underscores for everything but classes
@@ -47,3 +32,18 @@ However, if you only input one year in the CLI, there is no way to tell your
 program that it is the end_year and not the start_year. Does that make sense?
 Basically as it is right now, that case is impossible, so maybe find a way to
 specify in your CLI how to get the input to be the end year.
+
+Comments:
+Little commenting
+	Both booksdatasource.py and books.py are dense and not easily
+	scannable for meaning, so some comments might be helpful for readers
+
+Specifically, on the booksdatasource.py side, the authorStringToList comment says
+pretty much the exact same thing as the title and just takes up extra space. Also,
+many of the comments on the books.py side (the display ones, reportError, getHelp)
+don’t really add anything that would not have been clear from reading the name of the routine.
+
+Also with your CLI, it contradicts the books method in booksdatasource.py since
+the method documentation says that it will accept and run with a sort_by
+parameter other than ‘year’ or ‘title’ , but your program will return an error
+message when using an unknown search flag
