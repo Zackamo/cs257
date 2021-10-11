@@ -2,6 +2,7 @@
 '''
     booksdatasource.py
     Zack Johnson and Alia Babinet, 30 September 2021
+    Revised by Zack Johnson and Alia Babinet, 11 October 2021
     Starter code provided by Jeff Ondich
 
     For use in the "books" assignment at the beginning of Carleton's
