@@ -1,35 +1,31 @@
 CREATE TABLE athletes(
-  id SERIAL,
-  surname text,
-  given_name text,
+  id integer,
+  name text,
   sex text,
-  age integer,
-  height integer,
+  birth_year integer
 );
 
 CREATE TABLE games(
-  id SERIAL,
   year integer,
   season text,
   city text
 );
 
 CREATE TABLE events(
-  id SERIAL,
+  id integer,
   name text,
   sport text
 );
 
 CREATE TABLE noc(
-  id SERIAL,
-  name text,
-  abbreviation text
+  abbreviation text,
+  name text
 );
 
 CREATE TABLE results(
-  games_id integer,
+  games_year integer,
   event_id integer,
   athlete_id integer,
-  noc_id integer,
+  noc_abbr integer,
   result text
 );
