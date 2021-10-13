@@ -3,6 +3,8 @@
 
     Converts Olympics data from the kaggle olympics database into seperate CSV files
     suited for use in a psql database.
+    Data from:
+    https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results
 '''
 
 import csv
