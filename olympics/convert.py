@@ -5,6 +5,7 @@
     suited for use in a psql database.
     Data from:
     https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results
+    Note: NULL data is denoted 'NA'
 '''
 
 import csv
@@ -146,7 +147,7 @@ class OlympicsDataSource:
         try:
             birth_year = int(year) - int(age) - 1 #games are often early in the year
         except:
-            birth_year = None
+            birth_year = "NA" # NULL is NA elsewhere in the dataset,
 
         new_athlete = Athlete(name, sex, birth_year)
         for athlete in self.athlete_list:
@@ -188,7 +189,6 @@ def main():
         writer = csv.writer(results_csv)
         for result in data_source.results_list:
             writer.writerow(result.list_format())
-
 
 if __name__ == '__main__':
     main()
