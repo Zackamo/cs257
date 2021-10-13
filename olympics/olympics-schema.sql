@@ -17,7 +17,7 @@ CREATE TABLE events(
   sport text
 );
 
-CREATE TABLE noc(
+CREATE TABLE nocs(
   abbreviation text,
   name text
 );
@@ -26,6 +26,6 @@ CREATE TABLE results(
   games_year integer,
   event_id integer,
   athlete_id integer,
-  noc_abbr integer,
+  noc_abbr text,
   result text
 );
