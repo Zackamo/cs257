@@ -1,0 +1,20 @@
+NAME
+      Python3 olympics.py -- Search the Olympics database.
+
+SYNOPSIS
+       Python3 olympics.py [-h] [-n | -a] [argument]
+
+DESCRIPTION
+
+-n, --noc, --nation [noc_id]
+      Prints a list of athletes that have competed for the National Olympic Committee
+      (NOC) denoted by the three letter abbreviation <noc_id>. If <noc_id> is missing
+      or invalid, instead print out a list of all NOCs sorted by their all time gold
+      medal total.
+
+-a, --athlete [keyword]
+      Prints a list of athletes who's name contains <keyword> and a list of all of
+      their medal winning events sorted by year.
+
+-h, --help
+    Displays this Usage Statement.
