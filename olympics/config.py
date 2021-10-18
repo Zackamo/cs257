@@ -1,7 +1,9 @@
-''' Config file for accessing the books database
-    By: Zack Johnson
+''' Config.py
+    By: Zack Johnson, October 18, 2021
+
+    Config file for accessing the olympics database. For use with olympics.py.
 '''
 
-database = 'books'
+database = 'olympics'
 user = 'zackamo'
 password = 'psqlword'
