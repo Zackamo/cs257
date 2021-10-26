@@ -6,6 +6,7 @@
     Data from:
     https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results
     Note: NULL data is denoted 'NA'
+    Note: Inefficent implementation, takes several minutes (<30) to run.
 '''
 
 import csv
