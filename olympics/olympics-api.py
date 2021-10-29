@@ -4,7 +4,9 @@
     Zack Johnson, 25 October, 2021
 
     A Flask API for the Olympics dataset.
+    Note: My database ids Olympic games by their year so '14' won't work, use '2012'
 '''
+
 import sys
 import argparse
 import flask
@@ -50,15 +52,18 @@ def get_nocs():
 @app.route('/medalists/games/<games_year>')
 def get_games_results(games_year):
     ''' Returns a list of dictionaries, each containing an event and the athlete that won it
-        Note: my database id's Olympic games by their year.
+        Note: my database id's Olympic games by their year. e.g. <games_year> = '2012'
     '''
     events_list = []
     noc = flask.request.args.get('noc')
+    if noc is None:
+        noc = '';
     connection, cursor = get_database()
     query = ''' SELECT athletes.id, athletes.name, athletes.sex, events.sport, events.name, results.result
                 FROM athletes, events, results
                 WHERE athletes.id = results.athlete_id
-                AND results.noc_abbr LIKE %s
+                AND events.id = results.event_id
+                AND LOWER(results.noc_abbr) LIKE %s
                 AND results.games_year = %s
                 AND results.result IS NOT NULL;'''
     cursor.execute(query, ('%' + noc + '%', games_year))
@@ -68,46 +73,6 @@ def get_games_results(games_year):
 
     connection.close()
     return json.dumps(events_list)
-
-@app.route('/actor/<last_name>')
-def get_actor(last_name):
-    ''' Returns the first matching actor, or an empty dictionary if there's no match. '''
-    actor_dictionary = {}
-    lower_last_name = last_name.lower()
-    for actor in actors:
-        if actor['last_name'].lower().startswith(lower_last_name):
-            actor_dictionary = actor
-            break
-    return json.dumps(actor_dictionary)
-
-@app.route('/movies')
-def get_movies():
-    ''' Returns the list of movies that match GET parameters:
-          start_year, int: reject any movie released earlier than this year
-          end_year, int: reject any movie released later than this year
-          genre: reject any movie whose genre does not match this genre exactly
-        If a GET parameter is absent, then any movie is treated as though
-        it meets the corresponding constraint. (That is, accept a movie unless
-        it is explicitly rejected by a GET parameter.)
-    '''
-    movie_list = []
-    genre = flask.request.args.get('genre')
-    start_year = flask.request.args.get('start_year', default=0, type=int)
-    end_year = flask.request.args.get('end_year', default=10000, type=int)
-    for movie in movies:
-        if genre is not None and genre != movie['genre']:
-            continue
-        if movie['year'] < start_year:
-            continue
-        if movie['year'] > end_year:
-            continue
-        movie_list.append(movie)
-
-    return json.dumps(movie_list)
-
-@app.route('/help')
-def get_help():
-    return flask.render_template('help.html')
 
 def get_database():
     ''' Establishes a connection to the olympics database

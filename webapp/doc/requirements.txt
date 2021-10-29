@@ -1,0 +1,4 @@
+''' Requirements.txt
+    Zack Johnson and Amir Al-Sheikh, October 30, 2021
+    Information on our dataset and a list of intended features and use cases.
+'''
