@@ -1,0 +1,82 @@
+/* Stylesheet for use with Webapp Mockups 1-4
+    By Zack Johnson and Amir Al-Sheikh
+*/
+
+body{
+  background: #7171ff;
+}
+
+table{
+  display: block;
+  border: 1px solid black;
+  background-color: #f1f1f1;
+  margin-left: 20%;
+  margin-top: -10em;
+}
+
+tr.table_heading {
+
+  border: 1px solid black;
+}
+
+tr.table_heading th {
+  padding: 1em 1em;
+  text-align: center;
+}
+
+tr.table_item {
+  border: 1px solid black;
+  padding: 30px 6px;
+}
+
+tr.table_item th {
+  padding: 0.5em 2.5em;
+  text-align: center;
+}
+
+ul.filters{
+  list-style-type: square;
+  margin-right: 85%;
+  padding: 0.5%;
+  overflow: hidden;
+  background-color: #7171ff;
+}
+
+ul.filters ul.filter_options {
+  display: block;
+  border: 1px solid black;
+  background-color: #f1f1f1;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+}
+
+ul.filters p {
+    text-align: center;
+}
+
+/*Horizontal Navigation Based on Jeff Ondich's Sample4*/
+ul.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+
+ul.navbar li {
+    float: left;
+}
+
+ul.navbar li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul.navbar li a:hover {
+    background-color: #555;
+    color: white;
+}
