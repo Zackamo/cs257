@@ -3,77 +3,105 @@
 */
 
 body{
-  background: #7171ff;
+  background: #e6f2ff;
 }
 
-table{
+h1 {
+  text-align: center;
+}
+
+.results_search {
+  margin: 6px 5px;
+  width: 75%;
+}
+
+.results{
   display: block;
   border: 1px solid black;
   background-color: #f1f1f1;
   margin-left: 20%;
-  margin-top: -10em;
+  margin-top: 1em;
+  margin-right: 5%;
 }
 
-tr.table_heading {
-
-  border: 1px solid black;
+table{
+  border-collapse: collapse;
+  width: 100%;
 }
 
-tr.table_heading th {
+tr {
+  border-bottom: 1px solid #000000;
+
+}
+
+th {
   padding: 1em 1em;
   text-align: center;
 }
 
-tr.table_item {
-  border: 1px solid black;
-  padding: 30px 6px;
-}
-
-tr.table_item th {
+td {
   padding: 0.5em 2.5em;
   text-align: center;
 }
 
+/* Filters Sidebar */
+
 ul.filters{
-  list-style-type: square;
-  margin-right: 85%;
+  list-style-type: none;
+  width: 200px;
+  position: fixed;
   padding: 0.5%;
   overflow: hidden;
-  background-color: #7171ff;
+  background-color: #339933;
+  z-index: 1;
+  top: 3;
+  left: 1;
 }
 
 ul.filters ul.filter_options {
+  list-style-type: none;
   display: block;
   border: 1px solid black;
   background-color: #f1f1f1;
   color: black;
-  text-align: center;
   text-decoration: none;
+  margin: 10px;
+  padding: 5px;
 }
 
 ul.filters p {
-    text-align: center;
+  text-align: center;
+}
+
+ul.filter_options p {
+    text-align: left;
 }
 
 /*Horizontal Navigation Based on Jeff Ondich's Sample4*/
 ul.navbar {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 8px;
     overflow: hidden;
-    background-color: #f1f1f1;
+    background-color: #3399ff;
 }
 
 ul.navbar li {
     float: left;
+    background-color: #99ccff;
+    margin: 3px 8px;
 }
 
 ul.navbar li a {
     display: block;
     color: black;
     text-align: center;
-    padding: 14px 16px;
+    padding: 14px 30px;
     text-decoration: none;
+}
+
+ul.navbar li a.active {
+  background-color: #66b3ff;
 }
 
 ul.navbar li a:hover {
