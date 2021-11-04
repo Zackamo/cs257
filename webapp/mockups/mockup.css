@@ -24,6 +24,23 @@ h1 {
   margin-right: 5%;
 }
 
+.about{
+  display: block;
+  border: 1px solid black;
+  background-color: #f1f1f1;
+  margin-left: 5%;
+  margin-top: 5em;
+  margin-right: 5%;
+  margin-bottom: 5em%
+}
+
+.about_image{
+  margin-left: 1%;
+  margin-top: 1em;
+  margin-right: 1%;
+  margin-bottom: 1em;
+  float: left
+}
 table{
   border-collapse: collapse;
   width: 100%;
