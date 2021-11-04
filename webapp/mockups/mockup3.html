@@ -45,11 +45,26 @@
     <h1>Lego Pieces</h1>
 
     <div class="results">
+      <input class="results_search" type="text" placeholder="Search . . .">
+      <label for="sort_by">Sort By:</label>
+      <select name="sort_by" id="sort_sets">
+        <option value="Name">Name</option>
+        <option value="Minifigs">Minifig ID</option>
+      </select>
+      <select name="order">
+        <option>High to Low</option>
+        <option>Low to High</option>
+      </select>
       <table>
-        <input class="results_search" type="text" placeholder="Search . . .">
-        <tr><th>Part ID</th><th>Name</th><th>Theme</th><th>Parts</th><th>Minifigures</th><th>Year</th></tr>
-        <tr><th>76391</th><th>Hogwarts Icons</th><th>Harry Potter</th><th>3010</th><th>3</th><th>2021</th></tr>
-        <tr><th>75301</th><th>Luke Skywalker's X-Wing Fighter</th><th>Star Wars</th><th>474</th><th>4</th><th>2021</th></tr>
+        <tr><th>Part Number</th><th>Name</th><th>Color Name</th><th>Transparent?</th><th>Part Category</th></tr>
+        <tr><th>10048</th><th>Minifig Hair Tousled</th><th>Dark Brown</th><th></th><td>Minifig Headwear</td></tr>
+        <tr><th>2356</th><th>Brick 4x6</th><th>Dark Grey</th><th></th><td>Bricks</td></tr>
+      </table>
+    </div>
+    <div class="sidebar_info">
+      <table>
+        <tr><th>Proportion</th><th>Color</th></tr>
+        <tr><td>35%</td><td>Black</td></tr>
       </table>
     </div>
 
