@@ -1,0 +1,8 @@
+/*Connects Sets and Minifigs add a LIKE clause to search by one or the other
+*/
+SELECT minifigs.name, minifigs.fig_num, sets.name AS "set"
+FROM minifigs, sets, inventories, inventory_minifigs
+WHERE minifigs.fig_num = inventory_minifigs.fig_num
+AND inventory_minifigs.inventory_id = inventories.id
+AND inventories.set_num = sets.set_num
+LIMIT 15;

@@ -17,20 +17,20 @@
     </ul>
 
     <ul class="filters">
-      <p>Filters</p>
+      <h2>Filters</h2>
       <li><ul class="filter_options">
-        <p>Color Type</p>
+        <h3>Color Type</h3>
         <li><input type="checkbox" id="main">Opaque</li>
         <li><input type="checkbox" id="figs">Transparent</li>
       </ul></li>
       <li><ul class="filter_options">
-        <p>Part Role</p>
+        <h3>Part Role</h3>
         <li><input type="checkbox" id="main">Main Build</li>
         <li><input type="checkbox" id="figs">Figs and Accessories</li>
         <li><input type="checkbox" id="spare">Spare Part</li>
       </ul></li>
       <li><ul class="filter_options">
-        <p>Collection</p>
+        <h3>Collection</h3>
         <select name="sort_by" id="sort_sets">
           <option value="Set">Set</option>
           <option value="Minifig">Minifig</option>
@@ -44,7 +44,17 @@
 
     <h1>Lego Pieces</h1>
 
-    <div class="results">
+    <div class="sidebar_info">
+      <h3>Color Overview</h3>
+      <table>
+        <tr><th>Proportion</th><th>Color</th></tr>
+        <tr><td>35%</td><td>Black</td></tr>
+        <tr><td>25%</td><td>Blue</td></tr>
+        <tr><td>5%</td><td>Red</td></tr>
+      </table>
+    </div>
+
+    <div class="results" id="pieces">
       <input class="results_search" type="text" placeholder="Search . . .">
       <label for="sort_by">Sort By:</label>
       <select name="sort_by" id="sort_sets">
@@ -57,14 +67,8 @@
       </select>
       <table>
         <tr><th>Part Number</th><th>Name</th><th>Color Name</th><th>Transparent?</th><th>Part Category</th></tr>
-        <tr><th>10048</th><th>Minifig Hair Tousled</th><th>Dark Brown</th><th></th><td>Minifig Headwear</td></tr>
-        <tr><th>2356</th><th>Brick 4x6</th><th>Dark Grey</th><th></th><td>Bricks</td></tr>
-      </table>
-    </div>
-    <div class="sidebar_info">
-      <table>
-        <tr><th>Proportion</th><th>Color</th></tr>
-        <tr><td>35%</td><td>Black</td></tr>
+        <tr><td>10048</td><td>Minifig Hair Tousled</td><td>Dark Brown</td><td></td><td>Minifig Headwear</td></tr>
+        <tr><td>2356</td><td>Brick 4x6</td><td>Dark Grey</td><td></td><td>Bricks</td></tr>
       </table>
     </div>
 
