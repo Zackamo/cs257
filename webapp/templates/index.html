@@ -2,13 +2,20 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='books.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lego.css') }}" />
     <script type="text/javascript" src="{{ url_for('static', filename='lego.js') }}" ></script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" />
     <title>CS 257: Software Design</title>
 </head>
 
 <body>
+  <ul class="navbar">
+    <li class="home_button"><a class="active" href="/">Home</a></li>
+    <li><a href="/sets">Sets</a></li>
+    <li><a href="/minifigs">Minifigs</a></li>
+    <li><a href="/pieces">Pieces</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
     <h1>CS 257: Books Sample Web App</h1>
     <p>The appearance of this user interface is completely bare-bones, and
     not suitable for a final product. The point here is only to illustrate a

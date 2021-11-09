@@ -4,16 +4,17 @@
   <head>
     <meta charset="utf-8">
     <title>LEGO Pieces</title>
-    <link rel="stylesheet" href="mockup.css" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lego.css') }}" type="text/css">
+    <script type="text/javascript" src="{{ url_for('static', filename='lego.js') }}" ></script>
   </head>
   <body>
 
     <ul class="navbar">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="mockup1.html">Sets</a></li>
-      <li><a href="mockup2.html">Minifigs</a></li>
-      <li><a class="active" href="mockup3.html">Pieces</a></li>
-      <li><a href="mockup4.html">About</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/sets">Sets</a></li>
+      <li><a href="/minifigs">Minifigs</a></li>
+      <li><a class="active" href="/pieces">Pieces</a></li>
+      <li><a href="/about">About</a></li>
     </ul>
 
     <ul class="filters">

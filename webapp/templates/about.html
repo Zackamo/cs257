@@ -4,16 +4,17 @@
   <head>
     <meta charset="utf-8">
     <title>LEGO Sets</title>
-    <link rel="stylesheet" href="mockup.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lego.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='lego.js') }}" ></script>
   </head>
   <body>
 
     <ul class="navbar">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="mockup1.html">Sets</a></li>
-      <li><a href="mockup2.html">Minifigs</a></li>
-      <li><a href="mockup3.html">Pieces</a></li>
-      <li><a class="active" href="mockup4.html">About</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/sets">Sets</a></li>
+      <li><a href="/minifigs">Minifigs</a></li>
+      <li><a href="/pieces">Pieces</a></li>
+      <li><a class="active" href="/about">About</a></li>
     </ul>
 
 <h1>About</h1>
@@ -21,8 +22,8 @@
 <div class = "about">
   <div class = "about_image">
 
-      <img src="first_lego.jpeg" alt="Small House (1955)" style="width:500px;height:400;">
-      <figcaption>Small House (1955): The 7th LEGO set realeased</figcaption>
+      <img src="{{ url_for('static', filename='first_lego.jpeg') }}" alt="Small House (1955): The 7th Lego set released" style="width:500px;height:400;">
+      <figcaption>Small House (1955): The 7th LEGO set released</figcaption>
 
 
   </div>

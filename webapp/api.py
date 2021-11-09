@@ -22,15 +22,46 @@ def get_connection():
                             user=config.user,
                             password=config.password)
 
-@api.route('/minifigs/')
-def get_authors():
+@api.route('/sets/')
+def get_sets():
+    query = '''SELECT sets.set_num, sets.name, themes.name, sets.num_parts, SUM(inventory_minifigs.quantity) AS num_figs, sets.year
+            FROM sets, themes, inventories, inventory_minifigs
+            WHERE sets.theme_id = themes.id
+            AND sets.set_num = inventories.set_num
+            AND inventory_minifigs.inventory_id = inventories.id
+            GROUP BY sets.set_num, sets.name, themes.name, sets.num_parts, sets.year
+            LIMIT 100;'''
 
-    query = '''SELECT minifigs.name, minifigs.fig_num, sets.name
-               FROM minifigs, sets, inventories, inventory_minifigs
-               WHERE minifigs.fig_num = inventory_minifigs.fig_num
-               AND inventory_minifigs.inventory_id = inventories.id
-               AND inventories.set_num = sets.set_num
-               LIMIT 15;'''
+    sets_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, tuple())
+        for row in cursor:
+            set = {'set_num':row[0],
+                      'name':row[1],
+                      'theme':row[2],
+                      'num_parts':row[3],
+                      'num_figs':row[4],
+                      'year':row[5]}
+            sets_list.append(set)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(sets_list)
+
+@api.route('/minifigs/')
+def get_minifigs():
+
+    query = '''SELECT minifigs.fig_num, minifigs.name, minifigs.num_parts, COUNT(DISTINCT sets.name)
+            FROM minifigs, sets, inventories, inventory_minifigs, themes
+            WHERE minifigs.fig_num = inventory_minifigs.fig_num
+            AND inventory_minifigs.inventory_id = inventories.id
+            AND inventories.set_num = sets.set_num
+            GROUP BY minifigs.fig_num, minifigs.name, minifigs.num_parts
+            LIMIT 100;'''
 
     minifig_list = []
     try:
@@ -40,7 +71,8 @@ def get_authors():
         for row in cursor:
             minifig = {'name':row[0],
                       'fig_num':row[1],
-                      'set_name':row[2]}
+                      'num_parts':row[2],
+                      'num_sets':row[3]}
             minifig_list.append(minifig)
         cursor.close()
         connection.close()

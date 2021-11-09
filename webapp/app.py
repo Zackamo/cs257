@@ -1,6 +1,7 @@
 '''
-    books_webapp.py
-    Jeff Ondich, 25 April 2016
+    app.py
+    for the lego webapp project
+    Zack Johnson and Amir Al-Sheikh, 9 November 2021
     Updated 6 November 2021
 
     A small Flask application that provides a barelywebsite with an accompanying
@@ -13,9 +14,25 @@ import api
 app = flask.Flask(__name__, static_folder='static', template_folder='templates')
 app.register_blueprint(api.api, url_prefix='/api')
 
-@app.route('/') 
+@app.route('/')
 def home():
     return flask.render_template('index.html')
+
+@app.route('/sets')
+def sets():
+    return flask.render_template('sets.html')
+
+@app.route('/minifigs')
+def minifigs():
+    return flask.render_template('minifigs.html')
+
+@app.route('/pieces')
+def pieces():
+    return flask.render_template('pieces.html')
+
+@app.route('/about')
+def about():
+    return flask.render_template('about.html')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('A books-and-authors application, including API & DB')

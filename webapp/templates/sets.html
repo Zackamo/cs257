@@ -4,15 +4,16 @@
   <head>
     <meta charset="utf-8">
     <title>LEGO Sets</title>
-    <link rel="stylesheet" href="mockup.css" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lego.css') }}" type="text/css">
+    <script type="text/javascript" src="{{ url_for('static', filename='lego.js') }}" ></script>
   </head>
   <body>
     <ul class="navbar">
-      <li class="home_button"><a href="index.html">Home</a></li>
-      <li><a class="active" href="mockup1.html">Sets</a></li>
-      <li><a href="mockup2.html">Minifigs</a></li>
-      <li><a href="mockup3.html">Pieces</a></li>
-      <li><a href="mockup4.html">About</a></li>
+      <li class="home_button"><a href="/">Home</a></li>
+      <li><a class="active" href="/sets">Sets</a></li>
+      <li><a href="/minifigs">Minifigs</a></li>
+      <li><a href="/pieces">Pieces</a></li>
+      <li><a href="/about">About</a></li>
     </ul>
 
     <ul class="filters">
@@ -36,17 +37,20 @@
     <div class="results">
       <input class="results_search" type="text" placeholder="Search . . .">
       <label for="sort_by">Sort By:</label>
-      <select name="sort_by" id="sort_sets" class="sort">
-        <option value="Name">Name</option>
-        <option value="Minifigs">Minifigs</option>
-        <option value="Parts">Parts</option>
-        <option value="Year">Year</option>
+      <select name="sort_by" id="sort_by" class="sort">
+        <option value="" selected disabled hidden>Choose</option>
+        <!--option values correspond to column number -->
+        <option value="1">Name</option>
+        <option value="4">Minifigs</option>
+        <option value="3">Parts</option>
+        <option value="5">Year</option>
       </select>
-      <select name="order" class="sort">
-        <option>High to Low</option>
-        <option>Low to High</option>
+      <select name="order" id="order" class="sort">
+        <option value="desc">High to Low</option>
+        <option value="asc">Low to High</option>
       </select>
-      <table>
+      
+      <table id="results_table">
         <tr>
           <th>Set Number</th>
           <th>Name</th>
@@ -55,10 +59,6 @@
           <th>Minifigures</th>
           <th>Year</th>
         </tr>
-        <tr><td>76391</td><td>Hogwarts Icons</td><td>Harry Potter</td><td>3010</td><td>3</td><td>2021</td></tr>
-        <tr><td>75301</td><td>Luke Skywalker's X-Wing Fighter</td><td>Star Wars</td><td>474</td><td>4</td><td>2021</td></tr>
-        <tr><td>75319</td><td>The Armorer's Mandalorian Forge</td><td>Star Wars</td><td>258</td><td>3</td><td>2021</td></tr>
-        <tr><td>21322</td><td>Pirates of Barracuda Bay</td><td>LEGO Ideas</td><td>2545</td><td>8</td><td>2020</td></tr>
       </table>
     </div>
 
