@@ -21,6 +21,11 @@ function initialize() {
   if (order) {
       order.onchange = onSortChange;
   }
+  let sets_search = document.getElementById('sets_search');
+  if (sets_search) {
+    sets_search.onchange = searchSetsWithParameters;
+  }
+
  //pre-populate a query based on the page
   let path = window.location.pathname;
   let page = path.split("/").pop();
@@ -74,27 +79,42 @@ function onBasicButtonClicked(){
     });
 }
 
-function searchSets(){
-  let url = getAPIBaseURL() + "/sets";
+function searchSetsWithParameters(){
+  parameters = {};
+  let sets_search = document.getElementById('sets_search');
+  if (sets_search) {
+      parameters = Object.assign(parameters, {search_for:sets_search.value})
+  }
+  debug.log("searching for:" + sets_search.value)
 
+  searchSets(parameters);
+}
+
+function searchSets(args={}){
+  let url = getAPIBaseURL() + "/sets";
+  if (Object.keys(args).length > 0){
+    url += "?" + new URLSearchParams(args);
+  }
   fetch(url, {method: 'get'})
   .then((response) => response.json())
-  .then(function(figs) {
+  .then(function(sets) {
     let tableBody = '';
-    tableBody += "<tr><th>Set Number</th><th>Name</th><th>Theme</th><th>Parts</th><th>Minifigures</th><th>Year</th></tr>";
-    for (let k = 0; k < figs.length; k++){
-      let fig = figs[k];
-      tableBody += "<tr><td>" + fig['set_num'] + "</td>";
-      tableBody += "<td>" + fig['name'] + "</td>";
-      tableBody += "<td>" + fig['theme'] + "</td>";
-      tableBody += "<td>" + fig['num_parts'] + "</td>";
-      tableBody += "<td>" + fig['num_figs'] + "</td>";
-      tableBody += "<td>" + fig['year'] + "</td></tr>";
+    for (let k = 0; k < sets.length; k++){
+      let set = sets[k];
+      tableBody += "<tr><td>" + set['set_num'] + "</td>";
+      tableBody += "<td>" + set['name'] + "</td>";
+      tableBody += "<td>" + set['theme'] + "</td>";
+      tableBody += "<td>" + set['num_parts'] + "</td>";
+      tableBody += "<td>" + set['num_figs'] + "</td>";
+      tableBody += "<td>" + set['year'] + "</td></tr>";
     }
     let table = document.getElementById('results_table');
     if (table) {
         table.innerHTML = tableBody;
     }
+    table = document.getElementById("table");
+    tableContents = table.innerHTML;
+    table.innerHTML = tableContents;
   })
   .catch(function(error) {
       console.log(error);
@@ -120,6 +140,9 @@ function searchMinifigs(){
     if (table) {
         table.innerHTML = tableBody;
     }
+    table = document.getElementById("table");
+    tableContents = table.innerHTML;
+    table.innerHTML = tableContents;
   })
   .catch(function(error) {
       console.log(error);

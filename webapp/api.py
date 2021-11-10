@@ -24,11 +24,20 @@ def get_connection():
 
 @api.route('/sets/')
 def get_sets():
+    ''' Returns a list of LEGO sets in json form corresponding to the GET arguments
+            search_for, str: only find sets with names LIKE %search_string%
+            theme, str: only return sets with theme names LIKE %theme%
+        if GET parameters are absent, return an arbitrary subset of the list of sets
+    '''
+    search_string = flask.request.args.get('search_for', default="")
+    theme = flask.request.args.get('theme')
+
     query = '''SELECT sets.set_num, sets.name, themes.name, sets.num_parts, SUM(inventory_minifigs.quantity) AS num_figs, sets.year
             FROM sets, themes, inventories, inventory_minifigs
             WHERE sets.theme_id = themes.id
             AND sets.set_num = inventories.set_num
             AND inventory_minifigs.inventory_id = inventories.id
+            AND sets.name LIKE %s
             GROUP BY sets.set_num, sets.name, themes.name, sets.num_parts, sets.year
             LIMIT 100;'''
 
@@ -36,7 +45,7 @@ def get_sets():
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        cursor.execute(query, tuple())
+        cursor.execute(query, ('%' + search_string + '%',))
         for row in cursor:
             set = {'set_num':row[0],
                       'name':row[1],

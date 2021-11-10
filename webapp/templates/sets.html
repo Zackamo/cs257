@@ -35,7 +35,7 @@
 
 
     <div class="results">
-      <input class="results_search" type="text" placeholder="Search . . .">
+      <input class="sets_search" type="text" placeholder="Search . . .">
       <label for="sort_by">Sort By:</label>
       <select name="sort_by" id="sort_by" class="sort">
         <option value="" selected disabled hidden>Choose</option>
@@ -49,16 +49,24 @@
         <option value="desc">High to Low</option>
         <option value="asc">Low to High</option>
       </select>
-      
-      <table id="results_table">
-        <tr>
+      <table id="table">
+        <thead><tr>
           <th>Set Number</th>
           <th>Name</th>
           <th>Theme</th>
           <th>Parts</th>
           <th>Minifigures</th>
           <th>Year</th>
-        </tr>
+<!--
+          <th style="width:20em;">Set Number</th>
+          <th style="width:90%;">Name</th>
+          <th style="width:20em;">Theme</th>
+          <th style="width:5em;">Parts</th>
+          <th style="width:2em;">Minifigures</th>
+          <th style="width:4em;">Year</th>
+        -->
+        </tr></thead>
+        <tbody id="results_table"></tbody>
       </table>
     </div>
 

@@ -18,7 +18,7 @@ h3 {
   text-align: center;
 }
 
-.results_search {
+.sets_search {
   margin: 6px 5px;
   width: 60%;
 }
@@ -30,6 +30,7 @@ h3 {
   margin-left: 250px;
   margin-top: 1em;
   margin-right: 9%;
+  margin-bottom: 1%;
 }
 
 .about{
@@ -39,7 +40,7 @@ h3 {
   margin-left: 5%;
   margin-top: 5em;
   margin-right: 5%;
-  margin-bottom: 5em%
+  margin-bottom: 5em;
 }
 
 .about_image{
@@ -65,18 +66,27 @@ div.sidebar_info {
   margin-right: 5%;
 }
 
-.sort{
-
-}
-
 table {
   border-collapse: collapse;
-  width: 100%;
+  display: inline-grid;
+  grid-template-areas:
+  "head-fixed"
+  "body-scrollable";
 }
+
+thead {
+  grid-area: head-fixed;
+}
+
+tbody {
+  grid-area: body-scrollable;
+  overflow: auto;
+  height: calc(78vh - 55px);
+}
+
 
 tr {
   border-bottom: 1px solid #000000;
-
 }
 
 th {
@@ -85,7 +95,7 @@ th {
 }
 
 td {
-  padding: 0.5em 2.5em;
+  padding: 0.5em 1em;
   text-align: center;
 }
 
