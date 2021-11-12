@@ -13,14 +13,6 @@ function initialize() {
   if (basicButton){
     basicButton.onclick = onBasicButtonClicked;
   }
-  let sort_by = document.getElementById('sort_by');
-  if (sort_by) {
-      sort_by.onchange = onSortChange;
-  }
-  let order = document.getElementById('order');
-  if (order) {
-      order.onchange = onSortChange;
-  }
   let sets_search = document.getElementById('sets_search');
   if (sets_search) {
     sets_search.onchange = searchSetsWithParameters;
@@ -96,7 +88,7 @@ function onBasicButtonClicked(){
 
 function searchSetsWithParameters(){
   let parameters = {};
-  let sets_search = document.getElementById('query');
+  let sets_search = document.getElementById('sets_search');
   if (sets_search) {
       parameters = Object.assign(parameters, {search_for:sets_search.value})
   }
