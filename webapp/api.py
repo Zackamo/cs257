@@ -27,19 +27,31 @@ def get_sets():
     ''' Returns a list of LEGO sets in json form corresponding to the GET arguments
             search_for, str: only find sets with names LIKE %search_string%
             theme, str: only return sets with theme names LIKE %theme%
+            sort_by, str: sets the psql column to sort by
+            order, str: 'asc' or 'desc' the latter adds the DESC command
         if GET parameters are absent, return an arbitrary subset of the list of sets
     '''
-    search_string = flask.request.args.get('search_for', default="")
+    search_string = flask.request.args.get('search_for', default='').lower()
     theme = flask.request.args.get('theme')
+    sort_by = flask.request.args.get('sort_by', default='')
+    order = flask.request.args.get('order', default='asc')
 
     query = '''SELECT sets.set_num, sets.name, themes.name, sets.num_parts, SUM(inventory_minifigs.quantity) AS num_figs, sets.year
             FROM sets, themes, inventories, inventory_minifigs
             WHERE sets.theme_id = themes.id
             AND sets.set_num = inventories.set_num
             AND inventory_minifigs.inventory_id = inventories.id
-            AND sets.name LIKE %s
-            GROUP BY sets.set_num, sets.name, themes.name, sets.num_parts, sets.year
-            LIMIT 100;'''
+            AND LOWER(sets.name) LIKE %s
+            GROUP BY sets.set_num, sets.name, themes.name, sets.num_parts, sets.year'''
+    order_by_string = ''
+    if (sort_by != ''):
+        order_by_string = ' ORDER BY '
+        order_by_string += sort_by
+        if (order == 'desc'):
+            order_by_string += ' DESC '
+    query += order_by_string
+    query += '''
+    LIMIT 100;'''
 
     sets_list = []
     try:
@@ -64,11 +76,16 @@ def get_sets():
 @api.route('/minifigs/')
 def get_minifigs():
 
+    search_string = flask.request.args.get('search_for', default='').lower()
+    sort_by = flask.request.args.get('sort_by', default='')
+    order = flask.request.args.get('order', default='asc')
+
     query = '''SELECT minifigs.fig_num, minifigs.name, minifigs.num_parts, COUNT(DISTINCT sets.name)
             FROM minifigs, sets, inventories, inventory_minifigs, themes
             WHERE minifigs.fig_num = inventory_minifigs.fig_num
             AND inventory_minifigs.inventory_id = inventories.id
             AND inventories.set_num = sets.set_num
+            AND LOWER(minifigs.name) LIKE %s
             GROUP BY minifigs.fig_num, minifigs.name, minifigs.num_parts
             LIMIT 100;'''
 
@@ -76,7 +93,7 @@ def get_minifigs():
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        cursor.execute(query, tuple())
+        cursor.execute(query, ('%'+ search_string +'%',))
         for row in cursor:
             minifig = {'name':row[0],
                       'fig_num':row[1],

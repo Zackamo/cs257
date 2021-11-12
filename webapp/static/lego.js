@@ -26,14 +26,29 @@ function initialize() {
     sets_search.onchange = searchSetsWithParameters;
   }
 
+  let order = document.getElementById("order");
+  let sort_by = document.getElementById("sort_by");
+
  //pre-populate a query based on the page
   let path = window.location.pathname;
   let page = path.split("/").pop();
   switch (page) {
     case "sets":
+      if (sort_by) {
+          sort_by.onchange = searchSetsWithParameters;
+      }
+      if (order) {
+          order.onchange = searchSetsWithParameters;
+      }
       searchSets();
       break;
     case "minifigs":
+      if (sort_by) {
+          sort_by.onchange = searchFigsWithParameters;
+      }
+      if (order) {
+          order.onchange = searchFigsWithParameters;
+      }
       searchMinifigs();
       break;
     default:
@@ -80,12 +95,19 @@ function onBasicButtonClicked(){
 }
 
 function searchSetsWithParameters(){
-  parameters = {};
-  let sets_search = document.getElementById('sets_search');
+  let parameters = {};
+  let sets_search = document.getElementById('query');
   if (sets_search) {
       parameters = Object.assign(parameters, {search_for:sets_search.value})
   }
-  debug.log("searching for:" + sets_search.value)
+  let sortBy = document.getElementById('sort_by');
+  if(sortBy){
+    parameters = Object.assign(parameters, {sort_by:sortBy.value})
+  }
+  let order = document.getElementById('order');
+  if(order){
+    parameters = Object.assign(parameters, {order:order.value})
+  }
 
   searchSets(parameters);
 }
@@ -121,14 +143,34 @@ function searchSets(args={}){
     });
 }
 
-function searchMinifigs(){
+function searchFigsWithParameters(){
+  let parameters = {};
+  let figs_search = document.getElementById('minifigs_search');
+  if (figs_search) {
+      parameters = Object.assign(parameters, {search_for:figs_search.value})
+  }
+  /*let sortBy = document.getElementById('sort_by');
+  if(sortBy){
+    parameters = Object.assign(parameters, {sort_by:sortBy.value})
+  }
+  let order = document.getElementById('order');
+  if(order){
+    parameters = Object.assign(parameters, {order:order.value})
+  }*/
+  searchMinifigs(parameters);
+}
+
+function searchMinifigs(args={}){
   let url = getAPIBaseURL() + "/minifigs";
+  if (Object.keys(args).length > 0){
+    url += "?" + new URLSearchParams(args);
+  }
+  console.log("searching");
 
   fetch(url, {method: 'get'})
   .then((response) => response.json())
   .then(function(figs) {
     let tableBody = '';
-    tableBody += "<tr><th>Minifigure Name</th><th>Minifigure ID</th><th>Parts</th><th>Found in Set:</th></tr>";
     for (let k = 0; k < figs.length; k++){
       let fig = figs[k];
       tableBody += "<tr><td>" + fig['name'] + "</td>";
@@ -147,40 +189,4 @@ function searchMinifigs(){
   .catch(function(error) {
       console.log(error);
     });
-}
-
-function onSortChange(){
-  sortBy = document.getElementById('sort_by').value;
-  order = document.getElementById('order').value;
-  sortTable(sortBy, order);
-}
-
-function sortTable(column, dir){
-  let table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("resultsTable");
-  switching = true;
-  while (switching) {
-    switching = false;
-    rows = table.rows;
-    for (i = 1; i < (rows.length - 1); i++) { //row 0 is headers
-      shouldSwitch = false;
-      x = rows[i].getElementsByTagName("TD")[column];
-      y = rows[i + 1].getElementsByTagName("TD")[column];
-      if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          shouldSwitch = true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          shouldSwitch = true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
-  }
 }

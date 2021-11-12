@@ -38,7 +38,7 @@
     <h1>Lego Minifigures</h1>
 
     <div class="results">
-      <input class="results_search" type="text" placeholder="Search . . .">
+      <input class="results_search" id="minifigs_search" type="text" placeholder="Search . . .">
       <label for="sort_by">Sort By:</label>
       <select name="sort_by" id="sort_by">
         <option value="1">Name</option>
@@ -50,8 +50,14 @@
         <option value="desc">High to Low</option>
         <option value="asc">Low to High</option>
       </select>
-      <table id="results_table">
-        <tr><th>Minifig Id</th><th>Name</th><th>Parts</th><th>Comes In:</th></tr>
+      <table id="table">
+        <thead><tr>
+          <th>Minifig Id</th>
+          <th>Name</th>
+          <th>Parts</th>
+          <th>Comes In:</th>
+        </tr></thead>
+        <tbody id="results_table"></tbody>
       </table>
     </div>
 
