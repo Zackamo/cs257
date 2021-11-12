@@ -17,6 +17,10 @@ function initialize() {
   if (sets_search) {
     sets_search.onchange = searchSetsWithParameters;
   }
+  let figsSearch = document.getElementById("minifigs_search");
+  if (figsSearch){
+    figsSearch.onchange = searchFigsWithParameters;
+  }
 
   let order = document.getElementById("order");
   let sort_by = document.getElementById("sort_by");
@@ -141,14 +145,14 @@ function searchFigsWithParameters(){
   if (figs_search) {
       parameters = Object.assign(parameters, {search_for:figs_search.value})
   }
-  /*let sortBy = document.getElementById('sort_by');
+  let sortBy = document.getElementById('sort_by');
   if(sortBy){
     parameters = Object.assign(parameters, {sort_by:sortBy.value})
   }
   let order = document.getElementById('order');
   if(order){
     parameters = Object.assign(parameters, {order:order.value})
-  }*/
+  }
   searchMinifigs(parameters);
 }
 
@@ -157,7 +161,6 @@ function searchMinifigs(args={}){
   if (Object.keys(args).length > 0){
     url += "?" + new URLSearchParams(args);
   }
-  console.log("searching");
 
   fetch(url, {method: 'get'})
   .then((response) => response.json())

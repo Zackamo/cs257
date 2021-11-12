@@ -80,14 +80,21 @@ def get_minifigs():
     sort_by = flask.request.args.get('sort_by', default='')
     order = flask.request.args.get('order', default='asc')
 
-    query = '''SELECT minifigs.fig_num, minifigs.name, minifigs.num_parts, COUNT(DISTINCT sets.name)
+    query = '''SELECT minifigs.fig_num, minifigs.name, minifigs.num_parts, COUNT(DISTINCT sets.name) AS sets_in
             FROM minifigs, sets, inventories, inventory_minifigs, themes
             WHERE minifigs.fig_num = inventory_minifigs.fig_num
             AND inventory_minifigs.inventory_id = inventories.id
             AND inventories.set_num = sets.set_num
             AND LOWER(minifigs.name) LIKE %s
-            GROUP BY minifigs.fig_num, minifigs.name, minifigs.num_parts
-            LIMIT 100;'''
+            GROUP BY minifigs.fig_num, minifigs.name, minifigs.num_parts'''
+    order_by_string = ''
+    if (sort_by != ''):
+        order_by_string = ' ORDER BY '
+        order_by_string += sort_by
+        if (order == 'desc'):
+            order_by_string += ' DESC '
+    query += order_by_string
+    query += ''' LIMIT 100;'''
 
     minifig_list = []
     try:
