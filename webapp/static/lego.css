@@ -24,12 +24,11 @@ h3 {
 }
 
 .results{
-  display: block;
+  display: inline-block;
   border: 1px solid black;
   background-color: #f1f1f1;
   margin-left: 250px;
   margin-top: 1em;
-  margin-right: 9%;
   margin-bottom: 1%;
 }
 
@@ -49,6 +48,21 @@ h3 {
   margin-right: 1%;
   margin-bottom: 1em;
   float: left;
+}
+
+a.home_button{
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 30px;
+  text-decoration: none;
+  background-color: #3399ff;
+  margin: 1em 25em;
+}
+
+a:hover {
+    background-color: #555;
+    color: white;
 }
 
 #pieces {
@@ -97,6 +111,10 @@ th {
 td {
   padding: 0.5em 1em;
   text-align: center;
+}
+
+td.num{
+  text-align: right;
 }
 
 /* Filters Sidebar */

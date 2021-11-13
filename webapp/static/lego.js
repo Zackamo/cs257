@@ -122,9 +122,9 @@ function searchSets(args={}){
       tableBody += "<tr><td>" + set['set_num'] + "</td>";
       tableBody += "<td>" + set['name'] + "</td>";
       tableBody += "<td>" + set['theme'] + "</td>";
-      tableBody += "<td>" + set['num_parts'] + "</td>";
-      tableBody += "<td>" + set['num_figs'] + "</td>";
-      tableBody += "<td>" + set['year'] + "</td></tr>";
+      tableBody += "<td class='num'>" + set['num_parts'] + "</td>";
+      tableBody += "<td class='num'>" + set['num_figs'] + "</td>";
+      tableBody += "<td class'num'>" + set['year'] + "</td></tr>";
     }
     let table = document.getElementById('results_table');
     if (table) {
