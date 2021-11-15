@@ -20,9 +20,7 @@
       <h2>Filters</h2>
       <li><ul class="filter_options">
         <h3>Theme</h3>
-        <li><input type="checkbox" id="theme158"><label for="theme158">Star Wars</label></li>
-        <li><input type="checkbox" id="theme246"><label for="theme246">Harry Potter</label></li>
-        <li><input type="checkbox" id="theme22"><label for="theme22">Creator</label></li>
+        <select class="filter" name="filter_sets" id="sets_by_theme"><select>
       </ul></li>
       <li><ul class="filter_options">
         <h3>User Groups</h3>
@@ -38,12 +36,12 @@
       <input class="results_search" id="sets_search" type="search" placeholder="Search . . .">
       <label for="sort_by">Sort By:</label>
       <select name="sort_by" id="sort_by" class="sort">
-        <option value="" selected disabled hidden>Choose</option>
+        <option value="-1" selected disabled hidden>Choose</option>
         <!--option values correspond to psql column -->
-        <option value="sets.name">Name</option>
-        <option value="num_figs">Minifigs</option>
-        <option value="sets.num_parts">Parts</option>
-        <option value="sets.year">Year</option>
+        <option value="1">Name</option>
+        <option value="3">Parts</option>
+        <option value="4">Minifigs</option>
+        <option value="5">Year</option>
       </select>
       <select name="order" id="order" class="sort">
         <option value="desc">High to Low</option>

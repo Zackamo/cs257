@@ -32,7 +32,7 @@ def get_sets():
         if GET parameters are absent, return an arbitrary subset of the list of sets
     '''
     search_string = flask.request.args.get('search_for', default='').lower()
-    theme = flask.request.args.get('theme')
+    theme = flask.request.args.get('theme', default='')
     sort_by = flask.request.args.get('sort_by', default='')
     order = flask.request.args.get('order', default='asc')
 
@@ -42,11 +42,21 @@ def get_sets():
             AND sets.set_num = inventories.set_num
             AND inventory_minifigs.inventory_id = inventories.id
             AND LOWER(sets.name) LIKE %s
-            GROUP BY sets.set_num, sets.name, themes.name, sets.num_parts, sets.year'''
+            '''
+    input_tuple = ('%' + search_string + '%',)
+    if (theme != ''):
+        input_tuple += (theme,)
+        query += ' AND sets.theme_id = %s '
+    query += ' GROUP BY sets.set_num, sets.name, themes.name, sets.num_parts, sets.year '
+
+    set_headers = ['sets.set_num', 'sets.name', 'themes.name', 'sets.num_parts', 'num_figs', 'sets.year']
+    try:
+        sort_by = int(sort_by)
+    except:
+        sort_by = -1
     order_by_string = ''
-    if (sort_by != ''):
-        order_by_string = ' ORDER BY '
-        order_by_string += sort_by
+    if (sort_by >= 0 and sort_by < len(set_headers)):
+        order_by_string = ' ORDER BY ' + set_headers[sort_by]
         if (order == 'desc'):
             order_by_string += ' DESC '
     query += order_by_string
@@ -57,7 +67,8 @@ def get_sets():
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        cursor.execute(query, ('%' + search_string + '%',))
+        print(input_tuple)
+        cursor.execute(query, input_tuple)
         for row in cursor:
             set = {'set_num':row[0],
                       'name':row[1],
@@ -77,7 +88,7 @@ def get_sets():
 def get_minifigs():
 
     search_string = flask.request.args.get('search_for', default='').lower()
-    sort_by = flask.request.args.get('sort_by', default='')
+    sort_by = flask.request.args.get('sort_by', default="-1")
     order = flask.request.args.get('order', default='asc')
 
     query = '''SELECT minifigs.fig_num, minifigs.name, minifigs.num_parts, COUNT(DISTINCT sets.name) AS sets_in
@@ -88,9 +99,14 @@ def get_minifigs():
             AND LOWER(minifigs.name) LIKE %s
             GROUP BY minifigs.fig_num, minifigs.name, minifigs.num_parts'''
     order_by_string = ''
-    if (sort_by != ''):
+    fig_headers = ['minifigs.fig_num', 'minifigs.name', 'minifigs.num_parts', 'sets_in']
+    try:
+        sort_by = int(sort_by)
+    except:
+        sort_by = -1
+    if (sort_by >= 0 and sort_by < len(fig_headers)):
         order_by_string = ' ORDER BY '
-        order_by_string += sort_by
+        order_by_string += fig_headers[sort_by]
         if (order == 'desc'):
             order_by_string += ' DESC '
     query += order_by_string
@@ -113,3 +129,8 @@ def get_minifigs():
         print(e, file=sys.stderr)
 
     return json.dumps(minifig_list)
+
+@api.route('/help/')
+def get_help():
+    help_text = open('templates/help.txt').read()
+    return flask.Response(help_text, mimetype='text/plain')

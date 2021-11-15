@@ -8,11 +8,6 @@
 window.onload = initialize;
 
 function initialize() {
-
-  let basicButton = document.getElementById("basic_button");
-  if (basicButton){
-    basicButton.onclick = onBasicButtonClicked;
-  }
   let sets_search = document.getElementById('sets_search');
   if (sets_search) {
     sets_search.onchange = searchSetsWithParameters;
@@ -20,6 +15,10 @@ function initialize() {
   let figsSearch = document.getElementById("minifigs_search");
   if (figsSearch){
     figsSearch.onchange = searchFigsWithParameters;
+  }
+  let setsByTheme = document.getElementById("sets_by_theme");
+  if (setsByTheme){
+    setsByTheme.onchange = searchSetsWithParameters;
   }
 
   let order = document.getElementById("order");
@@ -36,6 +35,7 @@ function initialize() {
       if (order) {
           order.onchange = searchSetsWithParameters;
       }
+      setupSetsFilters();
       searchSets();
       break;
     case "minifigs":
@@ -62,32 +62,20 @@ function getAPIBaseURL() {
     return baseURL;
 }
 
-function onBasicButtonClicked(){
-  let url = getAPIBaseURL() + "/minifigs";
+function setupSetsFilters(){
+  let theme_options = {158:"Star Wars", 494:"Friends", 324:"Bionicle", 435:"Ninjago",
+  1:"Technic", 22:"Creator", 504:"Duplo", 246:"Harry Potter", 610:"Brickheadz", 605:"Nexo Knights",
+  571:"Legends of Chima", 690:"Super Mario", 577:"Minecraft", 579:"Disney Princess",
+  621:"Classic", 696:"Super Heroes Marvel", 602:"Jurassic World", 601:"Speed Champions",
+  713:"VIDIYO", 599:"LEGO Exclusive", 576:"LEGO Ideas", 252:"Architecture",
+  695:"Super Heroes DC", 578:"The LEGO Movie"};
 
-  // Send the request to the books API /authors/ endpoint
-  fetch(url, {method: 'get'})
-  // When the results come back, transform them from a JSON string into
-  // a Javascript object (in this case, a list of author dictionaries).
-  .then((response) => response.json())
-  .then(function(figs) {
-    let tableBody = '';
-    tableBody += "<tr><th>Minifigure Name</th><th>Minifigure ID</th><th>Comes In:</th></tr>";
-    for (let k = 0; k < figs.length; k++){
-      let fig = figs[k];
-      tableBody += "<tr><td>" + fig['name'] + "</td>";
-      tableBody += "<td>" + fig['fig_num'] + "</td>";
-      tableBody += "<td>" + fig['set_name'] + "</td></tr>";
-    }
-    let table = document.getElementById('minifig_table');
-    if (table) {
-        table.innerHTML = tableBody;
-    }
-  })
-  // Log the error if anything went wrong during the fetch.
-  .catch(function(error) {
-      console.log(error);
-    });
+  let selectBody = '<option value="" selected disabled hidden>Choose</option>';
+  for (const key in theme_options){
+    selectBody += "<option value='" + key + "'>" + theme_options[key] + "</option>"
+  }
+  select = document.getElementById("sets_by_theme");
+  select.innerHTML = selectBody;
 }
 
 function searchSetsWithParameters(){
@@ -103,6 +91,10 @@ function searchSetsWithParameters(){
   let order = document.getElementById('order');
   if(order){
     parameters = Object.assign(parameters, {order:order.value})
+  }
+  let theme = document.getElementById('sets_by_theme');
+  if(theme){
+    parameters = Object.assign(parameters, {theme:theme.value})
   }
 
   searchSets(parameters);

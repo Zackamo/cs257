@@ -24,3 +24,10 @@ AND sets.set_num = inventories.set_num
 AND inventory_minifigs.inventory_id = inventories.id
 GROUP BY sets.set_num, sets.name, themes.name, sets.num_parts, sets.year
 LIMIT 100;
+
+SELECT themes.name, themes.id, COUNT(DISTINCT sets.set_num)
+FROM themes, sets
+WHERE themes.parent_id is NULL
+AND sets.theme_id = themes.id
+GROUP BY themes.name, themes.id
+ORDER BY COUNT(DISTINCT sets.set_num) DESC;

@@ -9,7 +9,7 @@
   </head>
   <body>
 
-<!--Top Banner Navigation -->
+<!--Top Banner Navigation-->
     <ul class="navbar">
       <li><a href="/">Home</a></li>
       <li><a href="sets">Sets</a></li>
@@ -21,13 +21,15 @@
 <!--Side Bar-->
     <ul class="filters">
       <h2>Filters</h2>
-      <li><ul class="filter_options">
+      <li>
+        <li><ul class="filter_options">
         <h3>Theme</h3>
-        <li><input type="checkbox" id="theme158"><label for="theme158">Star Wars</label></li>
-        <li><input type="checkbox" id="theme246"><label for="theme246">Harry Potter</label></li>
-        <li><input type="checkbox" id="theme22"><label for="theme22">Creator</label></li>
-        <li><input type="checkbox" id="other"><label for="other">Other:</label><input type="text" placeholder="Theme Name"></li>
+        <select class="filter" name="filter_figs" id="figs_by_theme">
+          <option value="" selected disabled hidden>Choose</option>
+          <option value="158">Star Wars</option>
+        </select>
       </ul></li>
+      </li>
       <li><ul class="filter_options">
         <h3>User Groups</h3>
         <li><input type="checkbox" id="user1">Owned</li>
@@ -41,11 +43,11 @@
       <input class="results_search" id="minifigs_search" type="search" placeholder="Search...">
       <label for="sort_by">Sort By:</label>
       <select name="sort_by" id="sort_by">
-        <option value="" selected disabled hidden>Choose<option>
-        <option value="minifigs.name">Name</option>
-        <option value="minifigs.fig_num">Minifig ID</option>
-        <option value="minifigs.num_parts">Parts</option>
-        <option value="sets_in">Comes In</option>
+        <option value="-1" selected disabled hidden>Choose</option>
+        <option value="1">Name</option>
+        <option value="0">Minifig ID</option>
+        <option value="2">Parts</option>
+        <option value="3">Comes In</option>
       </select>
       <select name="order" id="order">
         <option value="desc">High to Low</option>
