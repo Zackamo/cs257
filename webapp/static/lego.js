@@ -1,6 +1,5 @@
 /* lego.js
-*  Zack Johnson and Amir Al-Sheikh
-*  November 9, 2021
+*  Zack Johnson, November 9, 2021
 *
 * Based on a template by Jeff Ondich
 */
@@ -16,15 +15,13 @@ function initialize() {
   if (figsSearch){
     figsSearch.onchange = searchFigsWithParameters;
   }
-  let setsByTheme = document.getElementById("sets_by_theme");
-  if (setsByTheme){
-    setsByTheme.onchange = searchSetsWithParameters;
-  }
 
+  //Elements common to multiple pages
+  let setsByTheme = document.getElementById("by_theme");
   let order = document.getElementById("order");
   let sort_by = document.getElementById("sort_by");
 
- //pre-populate a query based on the page
+  //pre-populate a query based on the page and handle common elements
   let path = window.location.pathname;
   let page = path.split("/").pop();
   switch (page) {
@@ -35,7 +32,9 @@ function initialize() {
       if (order) {
           order.onchange = searchSetsWithParameters;
       }
-      setupSetsFilters();
+      if (setsByTheme){
+        setsByTheme.onchange = searchSetsWithParameters;
+      }
       searchSets();
       break;
     case "minifigs":
@@ -45,11 +44,14 @@ function initialize() {
       if (order) {
           order.onchange = searchFigsWithParameters;
       }
+      if (setsByTheme){
+        setsByTheme.onchange = searchFigsWithParameters;
+      }
       searchMinifigs();
       break;
     default:
-
   }
+  setupFilters();
 }
 
 // Returns the base URL of the API, onto which endpoint
@@ -62,7 +64,7 @@ function getAPIBaseURL() {
     return baseURL;
 }
 
-function setupSetsFilters(){
+function setupFilters(){
   let theme_options = {158:"Star Wars", 494:"Friends", 324:"Bionicle", 435:"Ninjago",
   1:"Technic", 22:"Creator", 504:"Duplo", 246:"Harry Potter", 610:"Brickheadz", 605:"Nexo Knights",
   571:"Legends of Chima", 690:"Super Mario", 577:"Minecraft", 579:"Disney Princess",
@@ -74,10 +76,14 @@ function setupSetsFilters(){
   for (const key in theme_options){
     selectBody += "<option value='" + key + "'>" + theme_options[key] + "</option>"
   }
-  select = document.getElementById("sets_by_theme");
+  select = document.getElementById("by_theme");
   select.innerHTML = selectBody;
 }
 
+// Main API Functionality:
+
+
+//Sets Search
 function searchSetsWithParameters(){
   let parameters = {};
   let sets_search = document.getElementById('sets_search');
@@ -92,7 +98,7 @@ function searchSetsWithParameters(){
   if(order){
     parameters = Object.assign(parameters, {order:order.value})
   }
-  let theme = document.getElementById('sets_by_theme');
+  let theme = document.getElementById('by_theme');
   if(theme){
     parameters = Object.assign(parameters, {theme:theme.value})
   }
@@ -109,7 +115,7 @@ function searchSets(args={}){
   .then((response) => response.json())
   .then(function(sets) {
     let tableBody = '';
-    for (let k = 0; k < sets.length; k++){
+    for (let k = 0; k < Math.min(sets.length, 100); k++){
       let set = sets[k];
       tableBody += "<tr><td>" + set['set_num'] + "</td>";
       tableBody += "<td>" + set['name'] + "</td>";
@@ -122,15 +128,14 @@ function searchSets(args={}){
     if (table) {
         table.innerHTML = tableBody;
     }
-    table = document.getElementById("table");
-    tableContents = table.innerHTML;
-    table.innerHTML = tableContents;
   })
   .catch(function(error) {
       console.log(error);
     });
 }
 
+
+//Minifigure Search
 function searchFigsWithParameters(){
   let parameters = {};
   let figs_search = document.getElementById('minifigs_search');
@@ -158,7 +163,7 @@ function searchMinifigs(args={}){
   .then((response) => response.json())
   .then(function(figs) {
     let tableBody = '';
-    for (let k = 0; k < figs.length; k++){
+    for (let k = 0; k < Math.min(figs.length, 100); k++){
       let fig = figs[k];
       tableBody += "<tr><td>" + fig['name'] + "</td>";
       tableBody += "<td>" + fig['fig_num'] + "</td>";
@@ -169,9 +174,6 @@ function searchMinifigs(args={}){
     if (table) {
         table.innerHTML = tableBody;
     }
-    table = document.getElementById("table");
-    tableContents = table.innerHTML;
-    table.innerHTML = tableContents;
   })
   .catch(function(error) {
       console.log(error);

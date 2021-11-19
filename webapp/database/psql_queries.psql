@@ -31,3 +31,12 @@ WHERE themes.parent_id is NULL
 AND sets.theme_id = themes.id
 GROUP BY themes.name, themes.id
 ORDER BY COUNT(DISTINCT sets.set_num) DESC;
+
+
+SELECT inventories.id, 0 as quantity
+FROM inventories
+WHERE inventories.id NOT IN (SELECT inventory_id FROM inventory_minifigs)
+UNION
+SELECT inventories.id, inventory_minifigs.quantity
+FROM inventories, inventory_minifigs
+WHERE inventories.id = inventory_minifigs.inventory_id;

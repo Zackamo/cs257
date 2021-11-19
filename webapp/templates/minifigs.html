@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--Zack Johnson and Amir Al-Sheikh-->
+<!--Zack Johnson-->
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -14,31 +14,28 @@
       <li><a href="/">Home</a></li>
       <li><a href="sets">Sets</a></li>
       <li><a class="active" href="minifigs">Minifigs</a></li>
-      <li><a href="/pieces">Pieces</a></li>
       <li><a href="/about">About</a></li>
     </ul>
 
-<!--Side Bar-->
+<!--Filters Sidebar-->
     <ul class="filters">
       <h2>Filters</h2>
-      <li>
         <li><ul class="filter_options">
         <h3>Theme</h3>
-        <select class="filter" name="filter_figs" id="figs_by_theme">
-          <option value="" selected disabled hidden>Choose</option>
-          <option value="158">Star Wars</option>
-        </select>
+        <select class="filter" name="filter" id="by_theme"></select>
       </ul></li>
       </li>
+      <!-- FUTURE IDEA
       <li><ul class="filter_options">
         <h3>User Groups</h3>
         <li><input type="checkbox" id="user1">Owned</li>
         <li><input type="checkbox" id="user2">Wishlist</li>
-      </ul></li>
+      </ul></li>-->
     </ul>
 
     <h1>Lego Minifigures</h1>
 
+<!--Main Search and Sort-->
     <div class="results">
       <input class="results_search" id="minifigs_search" type="search" placeholder="Search...">
       <label for="sort_by">Sort By:</label>
@@ -53,12 +50,13 @@
         <option value="desc">High to Low</option>
         <option value="asc">Low to High</option>
       </select>
+<!--Results Table-->
       <table id="table">
         <thead><tr>
           <th>Minifig Id</th>
           <th>Name</th>
           <th>Parts</th>
-          <th>Comes In:</th>
+          <th># of Sets with this Minifig</th>
         </tr></thead>
         <tbody id="results_table"></tbody>
       </table>

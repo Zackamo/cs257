@@ -1,7 +1,7 @@
 '''
     api.py
     for the lego webapp project
-    Zack Johnson and Amir Al-Sheikh, 9 November 2021
+    Zack Johnson, 17 November 2021
 
     Flask API to support the lego web application.
     Based on a template by Jeff Ondich
@@ -36,18 +36,26 @@ def get_sets():
     sort_by = flask.request.args.get('sort_by', default='')
     order = flask.request.args.get('order', default='asc')
 
-    query = '''SELECT sets.set_num, sets.name, themes.name, sets.num_parts, SUM(inventory_minifigs.quantity) AS num_figs, sets.year
-            FROM sets, themes, inventories, inventory_minifigs
+    query = '''SELECT sets.set_num, sets.name, themes.name, sets.num_parts, SUM(sets_num_minifigs.quantity) AS num_figs, sets.year
+            FROM sets, themes, inventories,
+                (SELECT inventories.id, 0 as quantity
+                FROM inventories
+                WHERE inventories.id NOT IN (SELECT inventory_id FROM inventory_minifigs)
+                UNION
+                SELECT inventories.id, inventory_minifigs.quantity
+                FROM inventories, inventory_minifigs
+                WHERE inventories.id = inventory_minifigs.inventory_id) sets_num_minifigs
             WHERE sets.theme_id = themes.id
             AND sets.set_num = inventories.set_num
-            AND inventory_minifigs.inventory_id = inventories.id
+            AND sets_num_minifigs.id = inventories.id
             AND LOWER(sets.name) LIKE %s
             '''
     input_tuple = ('%' + search_string + '%',)
     if (theme != ''):
         input_tuple += (theme,)
         query += ' AND sets.theme_id = %s '
-    query += ' GROUP BY sets.set_num, sets.name, themes.name, sets.num_parts, sets.year '
+    query += ''' GROUP BY sets.set_num, sets.name, themes.name, sets.num_parts, sets.year
+    HAVING sets.num_parts > 1'''
 
     set_headers = ['sets.set_num', 'sets.name', 'themes.name', 'sets.num_parts', 'num_figs', 'sets.year']
     try:
@@ -60,8 +68,7 @@ def get_sets():
         if (order == 'desc'):
             order_by_string += ' DESC '
     query += order_by_string
-    query += '''
-    LIMIT 100;'''
+    query += ';'
 
     sets_list = []
     try:
@@ -86,16 +93,20 @@ def get_sets():
 
 @api.route('/minifigs/')
 def get_minifigs():
-
+    ''' Returns a list of LEGO Minifigures in json form corresponding to the GET arguments
+            search_for, str: only find figures with names LIKE %search_string%
+            sort_by, str: sets the psql column to sort by
+            order, str: 'asc' or 'desc'. the latter adds the DESC command.
+        if GET parameters are absent, return an arbitrary subset of the list of minifigures.
+    '''
     search_string = flask.request.args.get('search_for', default='').lower()
     sort_by = flask.request.args.get('sort_by', default="-1")
     order = flask.request.args.get('order', default='asc')
 
-    query = '''SELECT minifigs.fig_num, minifigs.name, minifigs.num_parts, COUNT(DISTINCT sets.name) AS sets_in
-            FROM minifigs, sets, inventories, inventory_minifigs, themes
+    query = '''SELECT minifigs.fig_num, minifigs.name, minifigs.num_parts, COUNT(DISTINCT inventories.set_num) AS sets_in
+            FROM minifigs, inventories, inventory_minifigs
             WHERE minifigs.fig_num = inventory_minifigs.fig_num
             AND inventory_minifigs.inventory_id = inventories.id
-            AND inventories.set_num = sets.set_num
             AND LOWER(minifigs.name) LIKE %s
             GROUP BY minifigs.fig_num, minifigs.name, minifigs.num_parts'''
     order_by_string = ''
@@ -110,7 +121,7 @@ def get_minifigs():
         if (order == 'desc'):
             order_by_string += ' DESC '
     query += order_by_string
-    query += ''' LIMIT 100;'''
+    query += ';'
 
     minifig_list = []
     try:
