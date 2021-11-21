@@ -150,6 +150,10 @@ function searchFigsWithParameters(){
   if(order){
     parameters = Object.assign(parameters, {order:order.value})
   }
+  let theme = document.getElementById('by_theme');
+  if (theme){
+    parameters = Object.assign(parameters, {theme:theme.value})
+  }
   searchMinifigs(parameters);
 }
 

@@ -26,7 +26,7 @@ def get_connection():
 def get_sets():
     ''' Returns a list of LEGO sets in json form corresponding to the GET arguments
             search_for, str: only find sets with names LIKE %search_string%
-            theme, str: only return sets with theme names LIKE %theme%
+            theme, int: only return sets with the given theme id
             sort_by, str: sets the psql column to sort by
             order, str: 'asc' or 'desc' the latter adds the DESC command
         if GET parameters are absent, return an arbitrary subset of the list of sets
@@ -97,18 +97,33 @@ def get_minifigs():
             search_for, str: only find figures with names LIKE %search_string%
             sort_by, str: sets the psql column to sort by
             order, str: 'asc' or 'desc'. the latter adds the DESC command.
+            theme, int: only return minifigs with at least one set in the given theme
         if GET parameters are absent, return an arbitrary subset of the list of minifigures.
     '''
     search_string = flask.request.args.get('search_for', default='').lower()
-    sort_by = flask.request.args.get('sort_by', default="-1")
+    sort_by = flask.request.args.get('sort_by', default='-1')
     order = flask.request.args.get('order', default='asc')
+    theme = flask.request.args.get('theme', default='')
 
-    query = '''SELECT minifigs.fig_num, minifigs.name, minifigs.num_parts, COUNT(DISTINCT inventories.set_num) AS sets_in
-            FROM minifigs, inventories, inventory_minifigs
-            WHERE minifigs.fig_num = inventory_minifigs.fig_num
-            AND inventory_minifigs.inventory_id = inventories.id
-            AND LOWER(minifigs.name) LIKE %s
-            GROUP BY minifigs.fig_num, minifigs.name, minifigs.num_parts'''
+    input_tuple = ('%'+ search_string +'%',)
+    if (theme != ''):
+        query = '''SELECT minifigs.fig_num, minifigs.name, minifigs.num_parts, COUNT(DISTINCT inventories.set_num) AS sets_in
+                FROM minifigs, inventories, inventory_minifigs, sets
+                WHERE minifigs.fig_num = inventory_minifigs.fig_num
+                AND inventory_minifigs.inventory_id = inventories.id
+                AND inventories.set_num = sets.set_num
+                AND LOWER(minifigs.name) LIKE %s
+                AND sets.theme_id = %s
+                GROUP BY minifigs.fig_num, minifigs.name, minifigs.num_parts'''
+        input_tuple += (theme,)
+    else:
+        query = '''SELECT minifigs.fig_num, minifigs.name, minifigs.num_parts, COUNT(DISTINCT inventories.set_num) AS sets_in
+                FROM minifigs, inventories, inventory_minifigs
+                WHERE minifigs.fig_num = inventory_minifigs.fig_num
+                AND inventory_minifigs.inventory_id = inventories.id
+                AND LOWER(minifigs.name) LIKE %s
+                GROUP BY minifigs.fig_num, minifigs.name, minifigs.num_parts'''
+
     order_by_string = ''
     fig_headers = ['minifigs.fig_num', 'minifigs.name', 'minifigs.num_parts', 'sets_in']
     try:
@@ -127,7 +142,7 @@ def get_minifigs():
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        cursor.execute(query, ('%'+ search_string +'%',))
+        cursor.execute(query, input_tuple)
         for row in cursor:
             minifig = {'name':row[0],
                       'fig_num':row[1],
