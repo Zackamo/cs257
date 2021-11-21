@@ -85,7 +85,7 @@ table {
     table-layout:auto;
     max-height: 40em;
     width: auto;
-    overflow-y:overlay;
+    overflow-y: scroll;
     border-collapse: collapse;
 }
 
@@ -131,7 +131,7 @@ ul.filters{
   padding: 4px;
   overflow: hidden;
   background-color: #339933;
-  z-index: 1;
+  z-index: 6;
   top: 3;
   left: 1;
 }
