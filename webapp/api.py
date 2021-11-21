@@ -36,6 +36,8 @@ def get_sets():
     sort_by = flask.request.args.get('sort_by', default='')
     order = flask.request.args.get('order', default='asc')
 
+    # the sub-select statement creates a table of sets and total number of figures in that set.
+    # it explicitly includes sets with no figures which would otherwise be excluded by a WHERE clause.
     query = '''SELECT sets.set_num, sets.name, themes.name, sets.num_parts, SUM(sets_num_minifigs.quantity) AS num_figs, sets.year
             FROM sets, themes, inventories,
                 (SELECT inventories.id, 0 as quantity
@@ -74,7 +76,6 @@ def get_sets():
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        print(input_tuple)
         cursor.execute(query, input_tuple)
         for row in cursor:
             set = {'set_num':row[0],
@@ -106,6 +107,7 @@ def get_minifigs():
     theme = flask.request.args.get('theme', default='')
 
     input_tuple = ('%'+ search_string +'%',)
+    # additional tables are needed to find minifigs by theme so I used a seperate query
     if (theme != ''):
         query = '''SELECT minifigs.fig_num, minifigs.name, minifigs.num_parts, COUNT(DISTINCT inventories.set_num) AS sets_in
                 FROM minifigs, inventories, inventory_minifigs, sets
@@ -144,8 +146,8 @@ def get_minifigs():
         cursor = connection.cursor()
         cursor.execute(query, input_tuple)
         for row in cursor:
-            minifig = {'name':row[0],
-                      'fig_num':row[1],
+            minifig = {'fig_num':row[0],
+                      'name':row[1],
                       'num_parts':row[2],
                       'num_sets':row[3]}
             minifig_list.append(minifig)

@@ -7,7 +7,7 @@
 window.onload = initialize;
 
 function initialize() {
-  let sets_search = document.getElementById('sets_search');
+  let sets_search = document.getElementById("sets_search");
   if (sets_search) {
     sets_search.onchange = searchSetsWithParameters;
   }
@@ -17,9 +17,10 @@ function initialize() {
   }
 
   //Elements common to multiple pages
-  let setsByTheme = document.getElementById("by_theme");
+  let theme = document.getElementById("by_theme");
   let order = document.getElementById("order");
   let sort_by = document.getElementById("sort_by");
+  setupFilters();
 
   //pre-populate a query based on the page and handle common elements
   let path = window.location.pathname;
@@ -32,8 +33,8 @@ function initialize() {
       if (order) {
           order.onchange = searchSetsWithParameters;
       }
-      if (setsByTheme){
-        setsByTheme.onchange = searchSetsWithParameters;
+      if (theme){
+        theme.onchange = searchSetsWithParameters;
       }
       searchSets();
       break;
@@ -44,27 +45,29 @@ function initialize() {
       if (order) {
           order.onchange = searchFigsWithParameters;
       }
-      if (setsByTheme){
-        setsByTheme.onchange = searchFigsWithParameters;
+      if (theme){
+        theme.onchange = searchFigsWithParameters;
       }
       searchMinifigs();
       break;
     default:
   }
-  setupFilters();
 }
 
 // Returns the base URL of the API, onto which endpoint
 // components can be appended.
 function getAPIBaseURL() {
     let baseURL = window.location.protocol
-                    + '//' + window.location.hostname
-                    + ':' + window.location.port
-                    + '/api';
+                    + "//" + window.location.hostname
+                    + ":" + window.location.port
+                    + "/api";
     return baseURL;
 }
 
 function setupFilters(){
+  /* hard coding a list of popular themes because there is no good way to automatically
+    query popular themes without getting a bunch of niche ones as well.
+  */
   let theme_options = {158:"Star Wars", 494:"Friends", 324:"Bionicle", 435:"Ninjago",
   1:"Technic", 22:"Creator", 504:"Duplo", 246:"Harry Potter", 610:"Brickheadz", 605:"Nexo Knights",
   571:"Legends of Chima", 690:"Super Mario", 577:"Minecraft", 579:"Disney Princess",
@@ -72,12 +75,15 @@ function setupFilters(){
   713:"VIDIYO", 599:"LEGO Exclusive", 576:"LEGO Ideas", 252:"Architecture",
   695:"Super Heroes DC", 578:"The LEGO Movie"};
 
-  let selectBody = '<option value="" selected disabled hidden>Choose</option>';
+  let selectBody = "<option value='' selected disabled hidden>Choose</option>";
+  selectBody += "<option value=''>All Themes</option>"
   for (const key in theme_options){
     selectBody += "<option value='" + key + "'>" + theme_options[key] + "</option>"
   }
   select = document.getElementById("by_theme");
-  select.innerHTML = selectBody;
+  if(select){
+    select.innerHTML = selectBody;
+  }
 }
 
 // Main API Functionality:
@@ -86,11 +92,11 @@ function setupFilters(){
 //Sets Search
 function searchSetsWithParameters(){
   let parameters = {};
-  let sets_search = document.getElementById('sets_search');
+  let sets_search = document.getElementById("sets_search");
   if (sets_search) {
       parameters = Object.assign(parameters, {search_for:sets_search.value})
   }
-  let sortBy = document.getElementById('sort_by');
+  let sortBy = document.getElementById("sort_by");
   if(sortBy){
     parameters = Object.assign(parameters, {sort_by:sortBy.value})
   }
@@ -169,10 +175,10 @@ function searchMinifigs(args={}){
     let tableBody = '';
     for (let k = 0; k < Math.min(figs.length, 100); k++){
       let fig = figs[k];
-      tableBody += "<tr><td>" + fig['name'] + "</td>";
-      tableBody += "<td>" + fig['fig_num'] + "</td>";
-      tableBody += "<td>" + fig['num_parts'] + "</td>";
-      tableBody += "<td>" + fig['num_sets'] + "</td></tr>";
+      tableBody += "<tr><td>" + fig['fig_num'] + "</td>";
+      tableBody += "<td>" + fig['name'] + "</td>";
+      tableBody += "<td class='num'>" + fig['num_parts'] + "</td>";
+      tableBody += "<td class='num'>" + fig['num_sets'] + "</td></tr>";
     }
     let table = document.getElementById('results_table');
     if (table) {
