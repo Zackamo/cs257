@@ -38,15 +38,16 @@ def get_sets():
 
     # the sub-select statement creates a table of sets and total number of figures in that set.
     # it explicitly includes sets with no figures which would otherwise be excluded by a WHERE clause.
-    query = '''SELECT sets.set_num, sets.name, themes.name, sets.num_parts, SUM(sets_num_minifigs.quantity) AS num_figs, sets.year
+    query = '''SELECT sets.set_num, sets.name, themes.name, sets.num_parts, sets_num_minifigs.quantity AS num_figs, sets.year
             FROM sets, themes, inventories,
-                (SELECT inventories.id, 0 as quantity
+                (SELECT inventories.id, 0 AS quantity
                 FROM inventories
                 WHERE inventories.id NOT IN (SELECT inventory_id FROM inventory_minifigs)
                 UNION
-                SELECT inventories.id, inventory_minifigs.quantity
+                SELECT inventories.id, SUM(inventory_minifigs.quantity) AS quantity
                 FROM inventories, inventory_minifigs
-                WHERE inventories.id = inventory_minifigs.inventory_id) sets_num_minifigs
+                WHERE inventories.id = inventory_minifigs.inventory_id
+                GROUP BY inventories.id) AS sets_num_minifigs
             WHERE sets.theme_id = themes.id
             AND sets.set_num = inventories.set_num
             AND sets_num_minifigs.id = inventories.id
@@ -56,7 +57,7 @@ def get_sets():
     if (theme != ''):
         input_tuple += (theme,)
         query += ' AND sets.theme_id = %s '
-    query += ''' GROUP BY sets.set_num, sets.name, themes.name, sets.num_parts, sets.year
+    query += ''' GROUP BY sets.set_num, sets.name, themes.name, sets.num_parts, sets.year, num_figs
     HAVING sets.num_parts > 1'''
 
     set_headers = ['sets.set_num', 'sets.name', 'themes.name', 'sets.num_parts', 'num_figs', 'sets.year']
